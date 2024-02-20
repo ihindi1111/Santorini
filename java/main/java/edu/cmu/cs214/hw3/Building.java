@@ -2,11 +2,15 @@ public class Building {
     protected int level;
 
     public Building() {
-        this.level = 0; // Initial level
+        this.level = 0;
     }
 
     public int getLevel() {
         return level;
+    }
+
+    public void build() {
+        if (level <= 3) this.level++;
     }
 
     public boolean isBuildable() {
