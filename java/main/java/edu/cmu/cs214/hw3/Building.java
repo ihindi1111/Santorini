@@ -17,9 +17,13 @@ public class Building {
     }
 
     /**
-     * Reutrns true if the tower has not reached a max height yet
+     * Builds if the tower has not reached a max height yet
      */
-    public boolean isBuildable() {
-        return level <= 3;
+    public void build() throws MaxLevelReachedException {
+        if (level <= 3) {
+            this.level++;
+        } else {
+            throw new MaxLevelReachedException("Cannot build beyond the maximum level.");
+        }
     }
 }
