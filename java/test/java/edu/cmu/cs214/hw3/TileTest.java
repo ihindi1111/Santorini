@@ -4,6 +4,10 @@ public class Tile {
     private Building hasBuilding;
     private boolean isOccupied;
 
+    /**
+     * Creates new Tile, holding the position, if available, if occupied by another player
+     * @param position
+     */
     public Tile(Position position) {
         this.position = position;
         this.isAvailable = true;

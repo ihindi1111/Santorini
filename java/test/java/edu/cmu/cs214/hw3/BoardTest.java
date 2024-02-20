@@ -1,4 +1,4 @@
-public class Board {
+public class BoardTest {
     private Tile[][] tiles;
 
     /**

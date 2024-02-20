@@ -19,7 +19,7 @@ public class Building {
     /**
      * Builds if the tower has not reached a max height yet
      */
-    public void build() throws MaxLevelReachedException {
+    public void build(Position p) throws MaxLevelReachedException {
         if (level <= 3) {
             this.level++;
         } else {

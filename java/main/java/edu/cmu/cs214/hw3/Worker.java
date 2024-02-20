@@ -1,11 +1,24 @@
-public class Player {
-    private Worker[] workers;
+public class Worker {
+    private Position position;
+    private int level;
 
-    public Player() {
-        workers = new Worker[]{new Worker(), new Worker()};
+    public Worker() {
+        this.position = new Position(0, 0); // Default position, should be set when the game starts
     }
 
-    public Worker getWorker(int workerIndex) {
-        if (workerIndex == 0 || workerIndex == 1) return workers[workerIndex];
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public void build(Position position) {
+        t.build(position);
+    }
+
+    public int getLevel() {
+        return level;
     }
 }
