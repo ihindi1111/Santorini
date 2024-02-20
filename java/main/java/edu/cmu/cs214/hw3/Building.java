@@ -1,19 +1,25 @@
-public class BuildingTest {
+public class Building {
     protected int level;
 
-    public BuildingTest() {
-        this.level = 0;
+    /**
+     * Initalizes new Building at a height of 1
+     */
+    public Building() {
+        this.level = 1;
     }
 
+    /**
+     * Returns the current Level
+     * @return int level
+     */
     public int getLevel() {
         return level;
     }
 
-    public void build() throws IllegalStateException {
-        if (level <= 3) {
-            this.level++;
-        } else {
-            throw new IllegalStateException("Cannot build beyond the maximum level.");
-        }
+    /**
+     * Reutrns true if the tower has not reached a max height yet
+     */
+    public boolean isBuildable() {
+        return level <= 3;
     }
 }
