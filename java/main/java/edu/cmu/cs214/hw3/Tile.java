@@ -16,4 +16,9 @@ public class Tile {
         this.hasBuilding = null;
         this.isOccupied = false;
     }
+
+    public boolean isOpen(Tile t) {
+        if (!t.getLevel().isBuildable()) isAvailable = false;
+        return isAvailable;
+    }
 }
