@@ -1,9 +1,13 @@
 public class Tile {
     private Position position;
     private boolean isAvailable;
-    private Building hasBuilding;
+    private BuildingTest hasBuilding;
     private boolean isOccupied;
 
+    /**
+     * Creates new Tile, holding the position, if available, if occupied by another player
+     * @param position
+     */
     public Tile(Position position) {
         this.position = position;
         this.isAvailable = true;
@@ -17,8 +21,8 @@ public class Tile {
         this.isOccupied = false;
     }
 
-    public boolean isOpen(Tile t) {
-        if (!t.getLevel().isBuildable()) isAvailable = false;
+    public boolean isOpen(Building b) {
+        if (!b.isBuildable()) isAvailable = false;
         return isAvailable;
     }
 }
