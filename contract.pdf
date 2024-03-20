@@ -1,0 +1,19 @@
+Operation: moveWorker(workerId, newX, newY)
+
+Cross References: Use Case: Player Moves a Worker
+
+Preconditions:
+
+validMove: The new coordinates, (newX, newY), represents a valid position on the board 
+that is 1 square adjacent to the worker's current position, meaning either the X or Y position has increased by 1 and not on the same spot
+NoWorkerOnNewPosition: There is no other worker on the position (newX, newY)
+ValidLevelDifference: The difference in levels between the worker's current position and (newX, newY) is no more than 1, 
+ensuring the worker can climb up one level or move horizontally
+hasDome: The tile at (newX, newY) does not have a dome to represent a complete tower
+WithinBounds: The Player is attempting to move to a valid position within the Board's dimensions (5x5; 0-4)
+
+Postconditions:
+
+WorkerMoved: The worker identified by workerId is now located at (newX, newY).
+gameWon: After the move, check if the player has won otherwise continue the game
+switchPlayer: If the move does not result in a victory condition, the game state advances to the next player's turn
