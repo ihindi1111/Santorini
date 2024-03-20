@@ -1,48 +1,36 @@
 Determining a Valid Build
+For this implementation, we make the build call from the Player class first, which then passes a isValidBuild to the Board class to validate if it is a valid build. Then the Board makes the following verifications:
+* First checks if the build call is within valid boundaries
+* Checks that the worker is not standing on the block they are attempting to build
+* Checks that that block has moved only one block
+* Checks there is no worker or a dome on the block they are attempting to build on
+If all checks pass, player makes a call to Tile.build to update the nearby Tiles accordingly
+
 Responsibilities:
 
-Board Object: Knows the state of each tile, including level, presence of a dome
-Tile Object: Can determine if a tower can be built on (spot is open, not already at max level)
-Worker Object: Build the building if valid
+Player: Controls the Workers and actions, including build, moveWorker, and getWorker
+Board: Knows the state of the Board's dimensions, then validates the player's position and if the Tile is occupied or has a dome
+Tile: Increases its own level and can set its occupancy
 
 Methods:
-Tile.isBuildable(): Validates if a build action is possible at a given position and whether a dome can be built.
-Worker.build(): If validated, builds upon the tile from the worker
+Player.build(int x, int y, int workerID)
+board.isValidBuild(worker, x, y)
+Tile.build(worker, x, y);
+Tile.increaseLevel();
 
 Justification:
-Information Expert Principle: The Tile object holds the information about its state, so it should be responsible for determining if a build action is valid
-Low Coupling: By delegating the responsibility of validation to the Tile object, we reduce the dependency of the Board on the inner workings of a Tile and allows worker to be responsible for building
-
-Performing the Build
-Responsibilities:
-
-Board Object: Should delegate the build action to the appropriate Tile.
-Tile Object: Should update its state to reflect the build action.
-Worker Object: Should perform the build action if next to the identified square
-
-Methods:
-Tile.isBuildable(): Updates the Tile's state to reflect the build action.
-Worker.build(): Builds upon the tile if available
-
-Justification:
-Encapsulation: The Tile's state is encapsulated, and its modification is done through its own methods, preserving the integrity of the object but uses Worker to ensure that the correct Worker is nearby.
+Information Expert Principle: The Tile object holds the information about itself, so it should be responsible for determining if a build action is valid considering the boundaries of the board as well
+Single Responsibility Principle: Tile class is focused on managing its state and the implications of a worker moving to or from it, keeping to the single responsibility principle
+Law of Demeter: Making sure other classes do not need to have knowledge and access the Tile fields to update the build
 
 Alternatives Considered
 
 Centralized Building Logic in Game:
 Trade-off: Would have reduced the complexity of the Tile class but increased the Game's responsibilities, making it more prone to change for different reasons and violating SRP
 
+Making board build
+Considered using the board since it is validating the build if it should realized this violates Law of Demeter since we were making changes and needing to access the Tile class directly, so used the Tile class itself.
+
 Final Design Decision
 The chosen design has the Board object act as a coordinator that delegates build actions to the individual Tile objects. Each Tile is then responsible for knowing and updating its state along with Worker to validate it is the right Worker. This approach respects the principles of object-oriented design.
 
-Object-Level Interaction Diagram
-In the object-level interaction diagram, you would see the following method calls:
-
-Player or Game calls Tile.isBuildable()
-
-Assuming the build is valid:
-Player called Worker.build()
-Game calls Worker.build() on the specific Tile object
-Tile updates its state (increments level or sets hasDome to true)
-
-This design maintains a clear separation of concerns, with each class handling its own specific part of the build action. The Board manages the overall game state and delegates specific actions to the Tiles, which are the experts on their own state but then make sure to have the correct Worker nearby to ensure a proper addition. This keeps the system flexible and the individual classes focused and cohesive.
