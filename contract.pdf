@@ -4,7 +4,7 @@ Cross References: Use Case: Player Moves a Worker
 
 Preconditions:
 
-ValidPosition: The new coordinates, (newX, newY), represents a valid position on the board 
+validMove: The new coordinates, (newX, newY), represents a valid position on the board 
 that is 1 square adjacent to the worker's current position, meaning either the X or Y position has increased by 1 and not on the same spot
 NoWorkerOnNewPosition: There is no other worker on the position (newX, newY)
 ValidLevelDifference: The difference in levels between the worker's current position and (newX, newY) is no more than 1, 
