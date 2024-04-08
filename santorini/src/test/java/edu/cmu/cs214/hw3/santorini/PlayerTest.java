@@ -10,7 +10,6 @@ import org.junit.Before;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
-    public class PlayerTest {
 
         private Player player;
         private Board board;
