@@ -62,10 +62,9 @@ public class BoardTest {
 
     @Test
     public void testIsValidMove_Invalid_TooHighToClimb() {
-        Tile currentTile = board.getTile(worker.getX(), worker.getY());
         Tile targetTile = board.getTile(2, 3);
-        currentTile.setLevel(0);
-        targetTile.setLevel(2); // Assuming setLevel() method exists to set tile height
+        targetTile.increaseLevel(); // Assuming setLevel() method exists to set tile height
+        targetTile.increaseLevel(); // Assuming setLevel() method exists to set tile height
         assertFalse(board.isValidMove(worker, 2, 3));
     }
 }
