@@ -26,8 +26,11 @@ public class Player {
     */
     public void placeWorker(int workerNum, int x, int y) {
         Worker worker = workers.get(workerNum);
-        if (board.isValidMove(worker, x, y) && !board.getTile(x, y).isOccupied()) {
-            board.getTile(x, y).setOccupied(true);
+        Tile tile = board.getTile(x, y);
+        if (board.isValidMove(worker, x, y) && !tile.isOccupied()) {
+            tile.setOccupied(true);
+            worker.setX(tile.getX());
+            worker.setY(tile.getY());
         } else {
             throw new IllegalArgumentException("Worker Position is out of bounds");
         }

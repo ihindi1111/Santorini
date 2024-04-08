@@ -83,4 +83,12 @@ public class Tile {
         worker.setY(this.y);
         this.isOccupied = true;
     }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
 }
