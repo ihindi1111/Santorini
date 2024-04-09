@@ -1,4 +1,4 @@
-package edu.cmu.cs214.hw3.santorini.backend;
+package edu.cmu.cs214.hw3.santorini.backend.games;
 
 public final class Santorini {
     private Game game;

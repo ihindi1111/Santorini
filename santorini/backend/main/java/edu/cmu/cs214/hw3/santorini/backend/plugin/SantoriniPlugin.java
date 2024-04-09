@@ -1,4 +1,4 @@
-package edu.cmu.cs214.hw3.santorini.backend;
+package edu.cmu.cs214.hw3.santorini.backend.plugin;
 
 import edu.cmu.cs214.hw3.santorini.backend.core.GameFrameworkImpl;
 import edu.cmu.cs214.hw3.santorini.backend.core.GameFramework;
@@ -52,13 +52,13 @@ public class SantoriniPlugin implements GamePlugin<String> {
     }
 
     @Override
-    public boolean isMoveValid(int x, int y) {
-        game.isValidMove(x, y);
+    public boolean isMoveValid(Player player, int workerNum, int x, int y) {
+        return game.isValidMove(game.getCurrentPlayer(), workerNum, x, y);
     }
 
     @Override
     public void onMovePlayed(int x, int y) {
-        // Update the game state based on the move.
+        game.play()
     }
 
     @Override
@@ -81,7 +81,7 @@ public class SantoriniPlugin implements GamePlugin<String> {
     @Override
     public String currentPlayer() {
         // Return the current player's name.
-        return game.getCurrentPlayerIndex(); // Placeholder
+        return game.getCurrentPlayer().toString(); // Placeholder
     }
 
     @Override
