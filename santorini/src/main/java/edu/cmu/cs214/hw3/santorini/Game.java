@@ -22,6 +22,7 @@ public class Game {
      * Sets up a new game by initializing the board, players, and setting the game state
      */
     public void newGame() {
+        scanner = new Scanner(System.in);
         this.board = new Board();
         this.players = new ArrayList<>();
         this.players.add(new Player(board));
@@ -52,7 +53,6 @@ public class Game {
                 }
             }
         }
-        scanner.close();
     }
 
     /**
