@@ -26,13 +26,33 @@ public class Game {
         this.players.add(new Player(board));
         this.players.add(new Player(board));
         
-        this.players.get(0).placeWorker(1, 1, 1);
-        this.players.get(0).placeWorker(2, 1, 2);
-        this.players.get(1).placeWorker(1, 3, 3);
-        this.players.get(1).placeWorker(2, 3, 4);
+        placeWorkers();
         
         this.currentPlayer = 0;
         this.gameWon = false;
+    }
+
+    private void placeWorkers() {
+        Scanner scanner = new Scanner(System.in);
+        for (int playerIndex = 0; playerIndex < players.size(); playerIndex++) {
+            System.out.println("Player " + (playerIndex + 1) + ", place your workers:");
+            for (int workerNum = 1; workerNum <= 2; workerNum++) {
+                boolean placed = false;
+                while (!placed) {
+                    System.out.println("Place worker " + workerNum + " (format: x y):");
+                    int x = scanner.nextInt();
+                    int y = scanner.nextInt();
+                    // Validate and place the worker
+                    if (board.getTile(x, y) != null && !board.getTile(x, y).isOccupied()) {
+                        players.get(playerIndex).placeWorker(workerNum, x, y);
+                        placed = true;
+                    } else {
+                        System.out.println("Invalid placement. Try again.");
+                    }
+                }
+            }
+        }
+        scanner.close();
     }
 
     /**
@@ -49,6 +69,7 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         while (!gameWon) {
             System.out.println("Player " + (currentPlayer + 1) + "'s turn.");
+            
             //Select a worker to move
             int workerID = getPlayerInputForWorkerID(scanner);
             Worker worker = players.get(currentPlayer).getWorker(workerID);
