@@ -65,6 +65,9 @@ public final class Santorini {
         return game.isGameWon();
     }
 
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
     // Retrieves the current game state, such as the board and player information
     // This could be converted to JSON or another format for communication with a frontend
     public Game getGameState() {
