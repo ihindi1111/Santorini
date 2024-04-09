@@ -1,8 +1,5 @@
 package edu.cmu.cs214.hw3.santorini.backend.core;
 
-import edu.cmu.cs214.hw3.santorini.backend.Worker;
-import edu.cmu.cs214.hw3.santorini.backend.Player;
-
 /**
  * The game plug-in interface that plug-ins use to implement and register games
  * with the {@link GameFramework}.  The type parameter, {@code P}, allows an
@@ -52,7 +49,7 @@ public interface GamePlugin<P> {
      * Returns true if a move at location (x, y) is allowed (based on the game's
      * current state). Returns false otherwise.
      */
-    boolean isMoveValid(Player player, int worker, int x, int y);
+    boolean isMoveValid(int x, int y);
 
     /**
      * Returns true if the current move is over (based on the game's current
@@ -66,7 +63,7 @@ public interface GamePlugin<P> {
      * @param x The x coordinate of the grid square that has been played.
      * @param y The y coordinate of the grid square that has been played.
      */
-    void onMovePlayed(Player player, int worker, int x, int y);
+    void onMovePlayed(int x, int y);
 
     /**
      * Returns true if the game is over (based on the game's current state).

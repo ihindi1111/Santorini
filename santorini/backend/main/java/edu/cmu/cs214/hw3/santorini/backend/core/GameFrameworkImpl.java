@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import edu.cmu.cs214.hw3.santorini.backend.SantoriniPlugin;
-
 /**
  * The framework core implementation.
  */
@@ -16,16 +14,24 @@ public class GameFrameworkImpl implements GameFramework {
     private final int DEFAULT_HEIGHT = 1;
     private final int DEFAULT_WIDTH = 1;
     private String[][] gameGrid;
-    private GamePlugin currentPlugin; // Only one plugin, Santorini, will be used.
+    private GamePlugin currentPlugin;
     private String footer;
-
+    private List<GamePlugin>  registeredPlugins;
 
     public GameFrameworkImpl() {
         gameGrid = new String[DEFAULT_WIDTH][DEFAULT_HEIGHT];
         footer = DEFAULT_FOOTER;
-        currentPlugin = new SantoriniPlugin(); // Ensure this matches the constructor of your SantoriniPlugin.
-        currentPlugin.onRegister(this);
-        // startNewGame(currentPlugin); // Automatically start the Santorini game
+        registeredPlugins = new ArrayList<GamePlugin>();
+    }
+
+
+
+    /**
+     * Registers a new {@link GamePlugin} with the game framework
+     */
+    public void registerPlugin(GamePlugin plugin) {
+        plugin.onRegister(this);
+        registeredPlugins.add(plugin);
     }
 
     /**
@@ -132,6 +138,10 @@ public class GameFrameworkImpl implements GameFramework {
 
     public String getFooter(){
         return footer;
+    }
+
+    public List<String> getRegisteredPluginName(){
+        return registeredPlugins.stream().map(GamePlugin::getGameName).collect(Collectors.toList());
     }
 
     public String getGameOverMsg(){
