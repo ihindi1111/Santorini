@@ -30,7 +30,7 @@ public class Player {
     public void placeWorker(int workerNum, int x, int y) {
         Worker worker = workers.get(workerNum);
         Tile tile = board.getTile(x, y);
-        if (board.isValidMove(worker, x, y) && !tile.isOccupied()) {
+        if (!tile.isOccupied()) {
             tile.setOccupied(true);
             worker.setX(x);
             worker.setY(y);

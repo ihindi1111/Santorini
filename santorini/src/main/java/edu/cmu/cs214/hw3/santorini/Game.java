@@ -9,6 +9,7 @@ public class Game {
     private List<Player> players;
     private int currentPlayer;
     private boolean gameWon;
+    private Scanner scanner;
 
     /**
      * Constructor to initialize a new game
@@ -33,7 +34,6 @@ public class Game {
     }
 
     private void placeWorkers() {
-        Scanner scanner = new Scanner(System.in);
         for (int playerIndex = 0; playerIndex < players.size(); playerIndex++) {
             System.out.println("Player " + (playerIndex + 1) + ", place your workers:");
             for (int workerNum = 1; workerNum <= 2; workerNum++) {
@@ -66,7 +66,6 @@ public class Game {
      * Begins the game loop, allowing players to take turns until the game is won.
      */
     public void play() {
-        Scanner scanner = new Scanner(System.in);
         while (!gameWon) {
             System.out.println("Player " + (currentPlayer + 1) + "'s turn.");
             
@@ -100,7 +99,6 @@ public class Game {
 
             switchPlayer();
         }
-        scanner.close();
     }
 
     /**
@@ -119,7 +117,7 @@ public class Game {
     * @return Worker ID
     */
     private int getPlayerInputForWorkerID(Scanner scanner) {
-        int workerID;
+        int workerID = 0;
         do {
             System.out.println("Select a worker to move (1 or 2):");
             while (!scanner.hasNextInt()) {
