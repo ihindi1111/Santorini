@@ -29,20 +29,24 @@
   </dependencies>
 
   <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-classpath</argument>
-                        <classpath/>
-                        <argument>edu.cmu.cs214.hw3.santorini.backend.App</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <configuration>
+                <!-- Specify the main class to run -->
+                <mainClass>edu.cmu.cs214.hw3.santorini.backend.App</mainClass>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <!-- Use the "java" goal to run the specified main class -->
+                        <goal>java</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+  </build>
 </project>
