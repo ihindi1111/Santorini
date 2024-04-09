@@ -20,10 +20,9 @@ public class PlayerTest {
         public void setUp() {
             board = new Board();
             player = new Player(board);
-            worker1 = new Worker(0, 0);
             worker2 = new Worker(1, 1);
-            player.put(1, worker1);
-            player.put(2, worker2);
+            player.placeWorker(1, 0, 0);
+            player.placeWorker(2, 1, 1);
         }
     
         @Test

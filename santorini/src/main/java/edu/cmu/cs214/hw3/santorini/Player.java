@@ -16,6 +16,9 @@ public class Player {
     public Player(Board board) {
         this.board = board;
         this.workers = new HashMap<>();
+        for (int i = 1; i <= 2; i++) {
+            workers.put(i, new Worker(-1, -1)); // Temporary coordinates, indicating unplaced workers
+        }
     }
 
     /**
@@ -29,8 +32,8 @@ public class Player {
         Tile tile = board.getTile(x, y);
         if (board.isValidMove(worker, x, y) && !tile.isOccupied()) {
             tile.setOccupied(true);
-            worker.setX(tile.getX());
-            worker.setY(tile.getY());
+            worker.setX(x);
+            worker.setY(y);
         } else {
             throw new IllegalArgumentException("Worker Position is out of bounds");
         }
