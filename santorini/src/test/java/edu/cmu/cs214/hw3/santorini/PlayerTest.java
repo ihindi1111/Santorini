@@ -1,11 +1,12 @@
 package edu.cmu.cs214.hw3.santorini;
 
-import edu.cmu.cs214.hw3.santorini.Board;
-import edu.cmu.cs214.hw3.santorini.Player;
-import edu.cmu.cs214.hw3.santorini.Tile;
-import edu.cmu.cs214.hw3.santorini.Worker;
-
 import org.junit.jupiter.api.Test;
+
+import edu.cmu.cs214.hw3.santorini.backend.Board;
+import edu.cmu.cs214.hw3.santorini.backend.Player;
+import edu.cmu.cs214.hw3.santorini.backend.Tile;
+import edu.cmu.cs214.hw3.santorini.backend.Worker;
+
 import org.junit.Before;
 import static org.junit.jupiter.api.Assertions.*;
 

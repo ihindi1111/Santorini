@@ -1,6 +1,11 @@
 package edu.cmu.cs214.hw3.santorini;
 
 import org.junit.jupiter.api.Test;
+
+import edu.cmu.cs214.hw3.santorini.backend.Board;
+import edu.cmu.cs214.hw3.santorini.backend.Tile;
+import edu.cmu.cs214.hw3.santorini.backend.Worker;
+
 import org.junit.Before;
 import static org.junit.jupiter.api.Assertions.*;
 

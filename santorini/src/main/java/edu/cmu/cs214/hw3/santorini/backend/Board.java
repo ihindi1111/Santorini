@@ -1,4 +1,4 @@
-package edu.cmu.cs214.hw3.santorini;
+package edu.cmu.cs214.hw3.santorini.backend;
 
 public class Board {
     private static final int BOARD_SIZE = 5;
