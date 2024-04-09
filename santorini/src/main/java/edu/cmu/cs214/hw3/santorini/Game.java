@@ -94,7 +94,16 @@ public class Game {
     * @return Worker ID
     */
     private int getPlayerInputForWorkerID(Scanner scanner) {
-        return 1; // placeholder
+        int workerID;
+        do {
+            System.out.println("Select a worker to move (1 or 2):");
+            while (!scanner.hasNextInt()) {
+                System.out.println("That's not a valid worker ID. Please enter 1 or 2:");
+                scanner.next(); // this is important to clear the scanner's buffer
+            }
+            workerID = scanner.nextInt();
+        } while (workerID != 1 && workerID != 2);
+        return workerID;
     }
 
     /**
@@ -102,8 +111,19 @@ public class Game {
     * @param scanner Scanner object for input.
     * @return Array of integers representing x and y coordinates.
     */
-    private int[] getPlayerInputForMove(Scanner scanner) {
-        return new int[]{0, 0}; // placeholder
+    private int[] getPlayerInputForMove(Scanner scanner, Worker worker) {
+        int x, y;
+        boolean validInput;
+        do {
+            System.out.println("Enter the coordinates to move to (format: x y):");
+            x = scanner.nextInt();
+            y = scanner.nextInt();
+            validInput = board.isValidMove(worker, x, y);
+            if (!validInput) {
+                System.out.println("Invalid move. Try again.");
+            }
+        } while (!validInput);
+        return new int[]{x, y};
     }
 
     /**
@@ -111,8 +131,19 @@ public class Game {
     * @param scanner Scanner object for input
     * @return Array of integers representing x and y coordinates
     */
-    private int[] getPlayerInputForBuild(Scanner scanner) {
-        return new int[]{0, 0}; // placeholder
+    private int[] getPlayerInputForBuild(Scanner scanner, Worker worker) {
+        int x, y;
+        boolean validInput;
+        do {
+            System.out.println("Enter the coordinates to build on (format: x y):");
+            x = scanner.nextInt();
+            y = scanner.nextInt();
+            validInput = board.isValidBuild(worker, x, y);
+            if (!validInput) {
+                System.out.println("Invalid build. Try again.");
+            }
+        } while (!validInput);
+        return new int[]{x, y};
     }
 
     public static void main(String[] args) {

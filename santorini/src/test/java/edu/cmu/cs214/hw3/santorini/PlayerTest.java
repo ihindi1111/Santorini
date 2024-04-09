@@ -75,5 +75,4 @@ public class PlayerTest {
             assertEquals(worker1, player.getWorker(1));
             assertEquals(worker2, player.getWorker(2));
         }
-    }
 }
