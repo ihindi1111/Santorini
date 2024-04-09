@@ -22,6 +22,14 @@ public final class Santorini {
         return game.placeWorker(workerNum, x, y);
     }
 
+    public boolean isValidMove(int playerIndex, int workerNum, int newX, int newY) {
+        if (game.getCurrentPlayerIndex() != playerIndex) {
+            System.out.println("It is not this player's turn");
+            return false;
+        }
+        return game.getBoard().isValidMove(game.getPlayers().get(playerIndex).getWorker(workerNum), newX, newY);
+    }
+
     // Moves a worker on the board
     public boolean moveWorker(int playerIndex, int workerNum, int newX, int newY) {
         if (game.getCurrentPlayerIndex() != playerIndex) {
@@ -38,6 +46,15 @@ public final class Santorini {
             return false;
         }
         return game.build(workerNum, buildX, buildY);
+    }
+
+    public boolean isValidBuild(int playerIndex, int workerNum, int buildX, int buildY) {
+        if (game.getCurrentPlayerIndex() != playerIndex) {
+            System.out.println("Not this Player's turn");
+            return false;
+        }
+        // This logic assumes there's a method in Game or Board for just validating a build
+        return game.getBoard().isValidBuild(game.getPlayers().get(playerIndex).getWorker(workerNum), buildX, buildY);
     }
 
     // Checks if the game has been won
