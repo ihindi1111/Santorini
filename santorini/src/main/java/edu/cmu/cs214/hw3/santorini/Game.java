@@ -49,9 +49,12 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         while (!gameWon) {
             System.out.println("Player " + (currentPlayer + 1) + "'s turn.");
+            //Select a worker to move
+            int workerID = getPlayerInputForWorkerID(scanner);
+            Worker worker = players.get(currentPlayer).getWorker(workerID);
 
-            int workerID = getPlayerInputForWorkerID(scanner); //Placeholder
-            int[] moveCoordinates = getPlayerInputForMove(scanner); //Placeholder
+            //Get move coordinations
+            int[] moveCoordinates = getPlayerInputForMove(scanner, worker);
             boolean moved = players.get(currentPlayer).moveWorker(moveCoordinates[0], moveCoordinates[1], workerID);
             
             if (!moved) {
@@ -65,7 +68,8 @@ public class Game {
                 break;
             }
 
-            int[] buildCoordinates = getPlayerInputForBuild(scanner);
+            //Get build coordinations
+            int[] buildCoordinates = getPlayerInputForBuild(scanner, worker);
             boolean built = players.get(currentPlayer).build(buildCoordinates[0], buildCoordinates[1], workerID);
             
             if (!built) {
