@@ -41,6 +41,8 @@ public class Board {
     * @return true if the build is valid, false otherwise
     */
     public boolean isValidBuild(Worker worker, int buildX, int buildY) {
+        if (worker == null) return false;
+        if (getTile(buildX, buildY) == null) return false; // Out of bounds
         if (buildX < 0 || buildX >= BOARD_SIZE || buildY < 0 || buildY >= BOARD_SIZE) return false; // Out of bounds
         int deltaX = Math.abs(worker.getX() - buildX);
         int deltaY = Math.abs(worker.getY() - buildY);
@@ -60,12 +62,15 @@ public class Board {
     */
     public boolean isValidMove(Worker worker, int newX, int newY) {
         // Check if move is within bounds and to an adjacent, unoccupied tile that does not exceed climb limit
+        if (worker == null) return false;
+        if (getTile(newX, newY) == null) return false; // Out of bounds
         if (newX < 0 || newX >= BOARD_SIZE || newY < 0 || newY >= BOARD_SIZE) return false; // Out of bounds
         if (worker.getX() == newX && worker.getY() == newY) return false; // Worker is staying on the same block
         int deltaX = Math.abs(worker.getX() - newX);
         int deltaY = Math.abs(worker.getY() - newY);
         if ((deltaX + deltaY) != ADJACENT_LIMIT) return false; //Not nearby
         if (getTile(newX, newY).isOccupied()) return false; // Occupied
+        if (getTile(newX, newY).hasDome()) return false;
         if (getTile(newX, newY).getLevel() - getTile(worker.getX(), worker.getY()).getLevel() > MAX_CLIMB_HEIGHT) return false; // Too high to climb
         return true;
     }
