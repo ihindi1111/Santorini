@@ -1,5 +1,8 @@
 package edu.cmu.cs214.hw3.santorini.backend.games;
 
+import edu.cmu.cs.cs214.hw3.santorini.backend.Game;
+import edu.cmu.cs.cs214.hw3.santorini.backend.Player;
+
 public final class Santorini {
     private Game game;
     public static final int SIZE = 5;

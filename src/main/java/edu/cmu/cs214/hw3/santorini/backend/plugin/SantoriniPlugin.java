@@ -3,7 +3,7 @@ package edu.cmu.cs214.hw3.santorini.backend.plugin;
 import edu.cmu.cs214.hw3.santorini.backend.core.GameFrameworkImpl;
 import edu.cmu.cs214.santorini.backend.hw3.core.GameFramework;
 import edu.cmu.cs214.santorini.backend.hw3.core.GamePlugin;
-import edu.cmu.cs214.hw3.Board;
+import edu.cmu.cs214.santorini.backend.hw3.Board;
 
 public class SantoriniPlugin implements GamePlugin<Player> {
     private static final String GAME_NAME = "Santorini";
