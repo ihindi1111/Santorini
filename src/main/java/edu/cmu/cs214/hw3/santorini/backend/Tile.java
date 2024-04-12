@@ -3,7 +3,7 @@ package edu.cmu.cs214.hw3.santorini.backend;
 public class Tile {
     private int x;
     private int y;
-    private boolean isOccupied;
+    private Worker worker;
     private boolean hasDome;
     private int level;
 
@@ -15,7 +15,7 @@ public class Tile {
     public Tile(int x, int y) {
         this.x = x;
         this.y = y;
-        this.isOccupied = false;
+        this.worker = null;
         this.hasDome = false;
         this.level = 0;
     }
@@ -29,24 +29,11 @@ public class Tile {
     }
 
     /**
-    * Increases the level of the tile by one, up to a maximum of 3. When the tile reaches level 3, a dome is added.
-    */
-    public void increaseLevel() {
-        if (!hasDome) {
-            level++;
-            if (level > 3) {
-                level = 3;
-                hasDome = true;
-            }
-        }
-    }
-
-    /**
     * Sets the occupied status of the tile.
     * @param set A boolean value indicating whether the tile is occupied.
     */
-    public void setOccupied(boolean set) {
-        this.isOccupied = set;
+    public void setWorker(Worker worker) {
+        this.worker = worker;
     }
 
     /**
@@ -54,7 +41,7 @@ public class Tile {
     * @return true if the tile is occupied, false otherwise.
     */
     public boolean isOccupied() {
-        return isOccupied;
+        return this.worker != null;
     }
 
     /**
@@ -68,27 +55,75 @@ public class Tile {
     /**
      * Performs a build, increasing level
      */
-    public void build() {
-        increaseLevel();
+    public boolean build() {
+        if (!hasDome) {
+            level++;
+            if (level > 3) {
+                level = 3;
+                hasDome = true;
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-     * Move the worker from its previous tile to the new one
+     * Move the worker from this one to a new one
      * @param worker worker
      * @param workerTile worker's tile
      */
-    public void moveWorker(Worker worker, Tile workerTile) {
-        workerTile.setOccupied(false);
-        worker.setX(this.x);
-        worker.setY(this.y);
-        this.isOccupied = true;
+    public void moveWorkerTo(Tile destinationTile) {
+        if (this.worker != null && !destinationTile.hasDome()) {
+            destinationTile.setWorker(this.worker);
+            this.worker = null; // Remove the worker from the current tile
+        }
     }
 
+    /**
+     * Retrieves the x coordinate of the tile
+     * @return the x coordinate
+     */
     public int getX() {
         return this.x;
     }
 
+    /**
+     * Retrieves the y coordinate of the tile
+     * @return the y coordinate
+     */
     public int getY() {
         return this.y;
+    }
+
+    /**
+     * Retrieves the worker on the tile
+     * @return the worker or null if none
+     */
+    public Worker getWorker() {
+        return this.worker;
+    }
+
+    /**
+     * Returns a visual representation of the tile
+     * @return the visual representation
+     */
+    public String visualRepresentation() {
+        StringBuilder representation = new StringBuilder();
+
+        if (this.worker != null) {
+            // Assuming Worker class has a method to identify the player (e.g., "X" or "O")
+            representation.append(this.worker.getPlayer());
+        }
+
+        // Enclose player identifier or empty space in tower representation
+        representation.insert(0, "[".repeat(this.level));
+        representation.append("]".repeat(this.level));
+
+        if (this.hasDome) {
+            // Place a "D" at the center for domes
+            representation = new StringBuilder("[ [ [ D ] ] ]");
+        }
+
+        return representation.toString();
     }
 }
