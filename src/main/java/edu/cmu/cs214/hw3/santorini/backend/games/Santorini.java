@@ -10,8 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Santorini {
-    private Game game;
+    private Board board;
+    private List<Player> players;
+    private Player currPlayer;
+    private boolean gameWon;
     public static final int SIZE = 5;
+    private TurnPhase currentPhase = TurnPhase.PLACE_WORKERS;
+    private boolean workersPlaced = false;
+    private Worker selectedWorker;
 
     private Player currentPlayer;
 
