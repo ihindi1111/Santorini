@@ -129,4 +129,38 @@ public class SantoriniPlugin implements GamePlugin<Player> {
             return "No current player";
         }
     }    
+
+    @Override
+    public boolean isMoveValid(int x, int y) {
+        // Check if the move is within the board boundaries
+        if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) {
+            return false;
+        }
+
+        // Check the validity based on the current phase of the game
+        switch (game.getPhase()) {
+            case PLACE_WORKERS:
+                // During placement, any unoccupied square is a valid move
+                return !game.getBoard().getTile(x, y).isOccupied();
+            case SELECT_WORKER:
+                // Here you would check if the selected square has the player's worker
+                Worker worker = game.getBoard().getTile(x, y).getWorker();
+                if (worker != null && worker.getPlayer() == game.getCurrentPlayer().getPlayerID()) {
+                    game.selectWorker(x, y);
+                    return true;
+                }
+                else return false;
+            case MOVE:
+                // Validate the move only if a worker has been selected
+                Worker selectedWorker = game.getSelectedWorker();
+                return selectedWorker != null && game.getBoard().isValidMove(selectedWorker, x, y);
+            case BUILD:
+                // Validate the build only if a worker has been selected
+                selectedWorker = game.getSelectedWorker();
+                return selectedWorker != null && game.getBoard().isValidBuild(selectedWorker, x, y);
+            default:
+                // If it's not one of the above phases, no moves should be valid
+                return false;
+        }
+    }
 }
