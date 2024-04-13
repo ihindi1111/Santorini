@@ -3,10 +3,21 @@ package edu.cmu.cs214.hw3.santorini.backend.plugin;
 import edu.cmu.cs214.hw3.santorini.backend.core.GameFrameworkImpl;
 import edu.cmu.cs214.santorini.backend.hw3.core.GameFramework;
 import edu.cmu.cs214.santorini.backend.hw3.core.GamePlugin;
-import edu.cmu.cs214.santorini.backend.hw3.Board;
+import edu.cmu.cs214.santorini.backend.games.Santorini;
+import edu.cmu.cs214.santorini.backend.hw3.Player;
+import edu.cmu.cs214.santorini.backend.hw3.Tile;
+import edu.cmu.cs214.santorini.backend.hw3.TurnPhase;
+import edu.cmu.cs214.santorini.backend.hw3.Worker;
 
 public class SantoriniPlugin implements GamePlugin<Player> {
     private static final String GAME_NAME = "Santorini";
+
+    private static final int WIDTH = Santorini.SIZE;
+    private static final int HEIGHT = Santorini.SIZE;
+
+    private static final String PLAYER_WON_MSG = "%s won!";
+
+    private String GAME_START_FOOTER = "You are playing Santorini!";
     private GameFramework framework;
     private Santorini game;
 
