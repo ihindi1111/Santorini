@@ -58,6 +58,19 @@ public class SantoriniPlugin implements GamePlugin<Player> {
         // This method could be used to prepare for a new move, but Santorini's state is managed internally.
     }
 
+    public boolean isMoveOver() {
+        return game.getPhase().equals(TurnPhase.END_TURN);
+    }
+
+    public void updateBoardVisuals() {
+        for (int y = 0; y < Santorini.SIZE; y++) {
+            for (int x = 0; x < Santorini.SIZE; x++) {
+                Tile tile = game.getBoard().getTile(x, y);
+                framework.setSquare(x, y, tile.visualRepresentation());
+            }
+        }
+    }
+    
     @Override
     public boolean isMoveValid(int x, int y) {
         // Santorini does not use this method directly for move validation; it uses more complex logic.
