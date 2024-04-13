@@ -108,4 +108,25 @@ public class SantoriniPlugin implements GamePlugin<Player> {
     public boolean isGameOver() {
         return game.isGameWon();
     }
+
+    public String getGameOverMessage() {
+        if (isGameOver()) {
+            return String.format(PLAYER_WON_MSG, game.getCurrentPlayer());
+        }
+        return "Game is still ongoing.";
+    }
+
+    public void onGameClosed() {
+        // Perform any cleanup if necessary.
+    }
+
+    public String currentPlayer() {
+        Player currentPlayer = game.getCurrentPlayer(); // Assuming `game` is your Santorini game instance
+        if (currentPlayer != null) {
+            return currentPlayer.toString();
+        } else {
+            // Handle the null case, perhaps by returning a placeholder string
+            return "No current player";
+        }
+    }    
 }
