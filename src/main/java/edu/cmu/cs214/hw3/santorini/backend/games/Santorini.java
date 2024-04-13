@@ -66,110 +66,55 @@ public final class Santorini {
         return currPlayer;
     }
 
-    // Builds a structure on the board
-    public boolean build(Player player, int workerNum, int buildX, int buildY) {
-        if (!game.getCurrentPlayer().equals(player)) {
-            System.out.println("It's not this player's turn");
-            return false;
+    /**
+     * Moves a worker to a new position on the board
+     * @param worker The worker to move
+     * @param newX The x-coordinate of the new position
+     * @param newY The y-coordinate of the new position
+     * @return True if the move was successful, false otherwise
+     */
+    public boolean moveWorker(Worker worker, int newX, int newY) {
+        if (board.isValidMove(worker, newX, newY)) {
+            board.getTile(worker.getX(), worker.getY()).setWorker(null);
+            Tile moving = board.getTile(newX, newY);
+            moving.setWorker(worker);
+            worker.setPosition(newX, newY);
+            return true;
         }
-        return game.build(workerNum, buildX, buildY);
-    }
-
-    public boolean isValidBuild(Player player, int workerNum, int buildX, int buildY) {
-        if (!game.getCurrentPlayer().equals(player)) {
-            System.out.println("Not this Player's turn");
-            return false;
-        }
-        // This logic assumes there's a method in Game or Board for just validating a build
-        return game.getBoard().isValidBuild(currentPlayer.getWorker(workerNum), buildX, buildY);
+        return false;
     }
 
     /**
-     * Attempts to move a worker on the board.
-     * @param player The player making the move.
-     * @param workerNum The worker number attempting the move.
-     * @param moveX The x-coordinate for the move.
-     * @param moveY The y-coordinate for the move.
-     * @return true if the move was successful, false otherwise.
+     * Method to build on the board, including checking if the build is valid.
+     * @param worker The worker attempting the build
+     * @param buildX The x-coordinate to build at
+     * @param buildY The y-coordinate to build at
+     * @return true if the build is valid, false otherwise
      */
-    public boolean tryMove(Player player, int workerNum, int moveX, int moveY) {
-        if (!game.getCurrentPlayer().equals(player)) {
-            System.out.println("It's not this player's turn.");
-            return false;
+    public boolean build(Worker worker, int buildX, int buildY) {
+        if (board.isValidBuild(worker, buildX, buildY)) {
+            Tile tileToBuild = board.getTile(buildX, buildY);
+            tileToBuild.build();
+            switchPlayer();
+            return true;
         }
-        if (!isValidMove(player, workerNum, moveX, moveY)) {
-            System.out.println("Invalid move. Please try again.");
-            return false;
-        } 
-        if (!game.moveWorker(workerNum, moveX, moveY)) {
-            System.out.println("Failed to move. Please try again.");
-            return false;
-        }
-        return true;
+        return false;
     }
 
     /**
-     * Attempts to build on the board after a successful move.
-     * @param player The player attempting the build.
-     * @param workerNum The worker number performing the build.
-     * @param buildX The x-coordinate for the build.
-     * @param buildY The y-coordinate for the build.
-     * @return true if the build was successful, false otherwise.
-     */
-    public boolean tryBuild(Player player, int workerNum, int buildX, int buildY) {
-        if (!isValidBuild(player, workerNum, buildX, buildY)) {
-            System.out.println("Invalid build. Please try again.");
-            return false;
-        } 
-        if (!game.build(workerNum, buildX, buildY)) {
-            System.out.println("Failed to build. Please try again.");
-            return false;
+    * Places a worker at the specified coordinates on the board
+    * @param workerNum The number identifying the worker
+    * @param x The x-coordinate for the worker placement
+    * @param y The y-coordinate for the worker placement
+    */
+    public boolean placeWorker(Worker worker, int x, int y) {
+        Tile tile = board.getTile(x, y);
+        if (tile != null && !tile.isOccupied()) {
+            tile.setWorker(worker);
+            worker.setPosition(x, y);
+            return true; // Successfully placed the worker.
+        } else {
+            return false; // Failed to place the worker due to the tile being occupied or out of bounds.
         }
-        return true;
-    }
-
-    /**
-     * Executes a complete play turn, including move and build actions.
-     * This method assumes external management of the play loop and only orchestrates a single attempt of move and build.
-     * @param player The player executing the play turn.
-     * @param workerNum The worker being used for the turn.
-     * @param moveX The x-coordinate for the move.
-     * @param moveY The y-coordinate for the move.
-     * @param buildX The x-coordinate for the build.
-     * @param buildY The y-coordinate for the build.
-     */
-    public void playTurn(Player player, int workerNum, int moveX, int moveY, int buildX, int buildY) {
-        boolean moveSuccessful = tryMove(player, workerNum, moveX, moveY);
-        
-        if (moveSuccessful && game.checkForWin(workerNum)) {
-            System.out.println("Game won by player.");
-            return; // Game ends after a win
-        }
-
-        boolean buildSuccessful = moveSuccessful && tryBuild(player, workerNum, buildX, buildY);
-
-        if (moveSuccessful && buildSuccessful) {
-            game.switchPlayer(); // Switch turn to the next player if both move and build were successful
-        }
-    }
-
-    // Checks if the game has been won
-    public boolean checkGameWon() {
-        return game.isGameWon();
-    }
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-    // Retrieves the current game state, such as the board and player information
-    // This could be converted to JSON or another format for communication with a frontend
-    public Game getGameState() {
-        return game;
-    }
-
-    // Main method for testing or standalone console-based gameplay
-    public static void main(String[] args) {
-        Santorini santorini = new Santorini();
-        santorini.startNewGame();
     }
 }
