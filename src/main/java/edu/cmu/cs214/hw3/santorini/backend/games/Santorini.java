@@ -162,4 +162,47 @@ public final class Santorini {
     public TurnPhase getPhase() {
         return currentPhase;
     }
+
+    /**
+     * Handles the placement of workers on the board
+     * @param x The x-coordinate of the placement
+     * @param y The y-coordinate of the placement
+     */
+    private void handleWorkerPlacement(int x, int y) {
+        if (!currPlayer.getWorker(0).isPlaced()) {
+            // Place the first worker if not already placed
+            boolean placed = placeWorker(currPlayer.getWorker(0), x, y);
+            if (!placed) {
+                // If the placement was not successful, perhaps display an error or log it
+                return;
+            }
+        } else if (!currPlayer.getWorker(1).isPlaced()) {
+            // Place the second worker if the first one is already placed
+            boolean placed = placeWorker(currPlayer.getWorker(1), x, y);
+            if (!placed) {
+                // If the placement was not successful, perhaps display an error or log it
+                return;
+            }
+            // After the second worker is placed for the current player, switch to the next player
+            switchPlayer();
+        }
+    
+        // Check if all players have placed their workers before moving to the MOVE phase for the game
+        if (allWorkersPlaced()) {
+            currentPhase = TurnPhase.SELECT_WORKER;
+        }
+    }
+
+    /**
+     * Checks if all workers have been placed on the board
+     * @return True if all workers have been placed, false otherwise
+     */
+    private boolean allWorkersPlaced() {
+        for (Player player : players) {
+            if (player.getWorker(0).getX() == -1 || player.getWorker(1).getX() == -1) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
