@@ -205,4 +205,48 @@ public final class Santorini {
         }
         return true;
     }
+
+    /**
+     * Plays the game based on the current phase and the coordinates of the move
+     * @param x The x-coordinate of the move
+     * @param y The y-coordinate of the move
+     */
+    public void play(int x, int y) {
+        if (gameWon) {
+            return; // Stop processing if the game is already won.
+        }
+        switch (currentPhase) {
+            case PLACE_WORKERS:
+                handleWorkerPlacement(x, y);
+                break;
+            case SELECT_WORKER:
+                System.out.println("Selecting worker");
+                selectedWorker = selectWorker(x, y);
+                if (selectedWorker != null && selectedWorker.getPlayer() == currPlayer.getPlayerID()) {
+                    currentPhase = TurnPhase.MOVE;
+                }
+                break;
+            case MOVE:
+                if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
+                    if (checkForWin(selectedWorker)) {
+                        gameWon = true;
+                        return;
+                    }
+                    currentPhase = TurnPhase.BUILD;
+                }
+                else {
+                    selectedWorker = null;  // Move was not successful, reset the selected worker
+                    currentPhase = TurnPhase.SELECT_WORKER;  // Optionally reset the phase or handle error
+                }
+                break;
+            case BUILD:
+                if (selectedWorker != null && build(selectedWorker, x, y)) {
+                    selectedWorker = null;
+                    currentPhase = TurnPhase.SELECT_WORKER;
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }
