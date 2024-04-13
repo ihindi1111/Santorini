@@ -1,6 +1,7 @@
 Starting a Game 
 
-Once in the root directory (s24-hw3), there are 2 steps:
+
+Before starting, move the pom file from s24-hw3 to back-end to make the code run. Once in the root directory (s24-hw3), there are 2 steps:
 
 1. Backend
 cd into back-end/ and then run the following 2 commands
