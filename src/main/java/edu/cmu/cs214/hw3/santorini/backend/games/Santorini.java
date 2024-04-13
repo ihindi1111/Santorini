@@ -19,16 +19,26 @@ public final class Santorini {
     private boolean workersPlaced = false;
     private Worker selectedWorker;
 
-    private Player currentPlayer;
-
+    /**
+     * Constructor for Santorini game initializes the board and players.
+     */
     public Santorini() {
-        this.game = new Game();
+        this.board = new Board();
+        this.players = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            players.add(new Player(i));
+        }
+        currPlayer = players.get(0);
+        this.gameWon = false;
     }
 
-    // Starts a new game
-    public void startNewGame() {
-        game.newGame();
-        currentPlayer = game.getCurrentPlayer();
+    
+    /**
+     * Switches the active player to the next one in the list.
+     */
+    public void switchPlayer() {
+        int nextPlayerIndex = (players.indexOf(currPlayer) + 1) % players.size();
+        this.currPlayer = players.get(nextPlayerIndex);
     }
 
     // Places a worker on the board for the current player
