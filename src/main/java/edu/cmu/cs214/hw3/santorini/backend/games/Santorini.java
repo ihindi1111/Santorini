@@ -155,4 +155,11 @@ public final class Santorini {
         return board.getTile(x, y).visualRepresentation();
     }
 
+    /**
+     * Returns the current phase of the game
+     * @return The current phase of the game
+     */
+    public TurnPhase getPhase() {
+        return currentPhase;
+    }
 }
