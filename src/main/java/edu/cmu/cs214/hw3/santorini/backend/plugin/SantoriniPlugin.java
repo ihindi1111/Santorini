@@ -28,12 +28,12 @@ public class SantoriniPlugin implements GamePlugin<Player> {
 
     @Override
     public int getGridWidth() {
-        return Santorini.SIZE;
+        return WIDTH;
     }
 
     @Override
     public int getGridHeight() {
-        return Santorini.SIZE;
+        return HEIGHT;
     }
 
     @Override
@@ -44,7 +44,13 @@ public class SantoriniPlugin implements GamePlugin<Player> {
 
     @Override
     public void onNewGame() {
-        game.startNewGame();
+        game = new Santorini();
+        framework.setFooterText(GAME_START_FOOTER);
+        for (int y = 0; y < HEIGHT; y++) {
+            for (int x = 0; x < WIDTH; x++) {
+                framework.setSquare(x, y, ""); // Clear the board
+            }
+        }
     }
 
     @Override
