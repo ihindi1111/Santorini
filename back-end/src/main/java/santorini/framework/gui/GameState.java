@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import edu.cmu.cs214.hw3.santorini.backend.framework.core.GameFrameworkImpl;
+import framework.core.GameFrameworkImpl;
 
 public class GameState {
 

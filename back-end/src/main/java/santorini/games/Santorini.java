@@ -1,10 +1,10 @@
 package games;
 
-import Board;
-import Worker;
-import Player;
-import Tile;
-import TurnPhase;
+import components.Board;
+import components.Worker;
+import components.Player;
+import components.Tile;
+import components.TurnPhase;
 
 import java.util.ArrayList;
 import java.util.List;

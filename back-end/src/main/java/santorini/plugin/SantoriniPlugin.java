@@ -4,10 +4,10 @@ import framework.core.GameFrameworkImpl;
 import framework.core.GameFramework;
 import framework.core.GamePlugin;
 import games.Santorini;
-import Player;
-import Tile;
-import TurnPhase;
-import Worker;
+import components.Player;
+import components.Tile;
+import components.TurnPhase;
+import components.Worker;
 
 public class SantoriniPlugin implements GamePlugin<String> {
     private static final String GAME_NAME = "Santorini";
