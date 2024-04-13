@@ -70,44 +70,42 @@ public class SantoriniPlugin implements GamePlugin<Player> {
             }
         }
     }
-    
-    @Override
-    public boolean isMoveValid(int x, int y) {
-        // Santorini does not use this method directly for move validation; it uses more complex logic.
-        return false;
-    }
 
-    @Override
-    public boolean isMoveOver() {
-        // In Santorini, a move is over after a player has moved and built. This is managed within the playTurn method.
-        return false;
-    }
-
-    @Override
     public void onMovePlayed(int x, int y) {
-        // This method could be used to handle a move being played, but Santorini requires more information.
+        game.play(x, y);
+        framework.setSquare(x, y, game.getBoard().getTile(x, y).visualRepresentation());
+        updateBoardVisuals();
+        updateFooterText();
     }
 
-    @Override
-    public boolean isGameOver() {
-        return game.checkGameWon();
-    }
-
-    @Override
-    public String getGameOverMessage() {
-        if (isGameOver()) {
-            return "The game has been won!";
+    private void updateFooterText() {
+        if (game.isGameWon()) {
+            GAME_START_FOOTER = String.format(PLAYER_WON_MSG, game.getCurrentPlayer().toString());
         }
-        return "Game is still ongoing.";
+        switch (game.getPhase()) {
+            case PLACE_WORKERS:
+                GAME_START_FOOTER = "Place your workers on the board.";
+                break;
+            case SELECT_WORKER:
+                GAME_START_FOOTER = String.format("%s, select a worker to move.", game.getCurrentPlayer().toString());
+                break;
+            case MOVE:
+                GAME_START_FOOTER = "Move your selected worker to an adjacent square.";
+                break;
+            case BUILD:
+                GAME_START_FOOTER = "Build a block or dome adjacent to your worker.";
+                break;
+            case END_TURN:
+                GAME_START_FOOTER = String.format("%s has ended their turn.", game.getCurrentPlayer().toString());
+                break;
+            default:
+                GAME_START_FOOTER = "Unexpected phase. Check the game state.";
+                break;
+        }
+        framework.setFooterText(GAME_START_FOOTER);
     }
 
-    @Override
-    public void onGameClosed() {
-        // Perform any cleanup if necessary.
-    }
-
-    @Override
-    public Player currentPlayer() {
-        return game.getCurrentPlayer();
+    public boolean isGameOver() {
+        return game.isGameWon();
     }
 }
