@@ -249,4 +249,20 @@ public final class Santorini {
                 break;
         }
     }
+    
+    /**
+     * Returns the selected worker
+     * @return The selected worker
+     */
+    public Worker getSelectedWorker() {
+        return selectedWorker;
+    }
+
+    /**
+     * Returns whether workers have been placed on the board
+     * @return True if workers have been placed, false otherwise
+     */
+    public boolean getWorkersPlaced() {
+        return workersPlaced;
+    }
 }
