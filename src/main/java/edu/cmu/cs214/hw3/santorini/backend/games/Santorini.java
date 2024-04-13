@@ -41,30 +41,29 @@ public final class Santorini {
         this.currPlayer = players.get(nextPlayerIndex);
     }
 
-    // Places a worker on the board for the current player
-    public boolean placeWorker(Player player, int workerNum, int x, int y) {
-        if (!game.getCurrentPlayer().equals(player)) {
-            System.out.println("It's not this player's turn");
-            return false;
-        }
-        return game.placeWorker(workerNum, x, y);
+    /**
+     * Checks if a worker has reached the third level of a tower
+     * @param worker The worker to check for a win condition
+     * @return True if the worker has reached the third level, false otherwise
+     */
+    public boolean checkForWin(Worker worker) {
+        return board.getTile(worker.getX(), worker.getY()).getLevel() == 3;
     }
 
-    public boolean isValidMove(Player player, int workerNum, int newX, int newY) {
-        if (!game.getCurrentPlayer().equals(player)) {
-            System.out.println("It is not this player's turn");
-            return false;
-        }
-        return game.getBoard().isValidMove(currentPlayer.getWorker(workerNum), newX, newY);
+    /**
+     * Checks if the game has been won
+     * @return True if the game has been won, false otherwise
+     */
+    public boolean isGameWon() {
+        return gameWon;
     }
 
-    // Moves a worker on the board
-    public boolean moveWorker(Player player, int workerNum, int newX, int newY) {
-        if (!game.getCurrentPlayer().equals(player)) {
-            System.out.println("It's not this player's turn");
-            return false;
-        }
-        return game.moveWorker(workerNum, newX, newY);
+    /**
+     * Returns the current player
+     * @return The current player
+     */
+    public Player getCurrentPlayer() {
+        return currPlayer;
     }
 
     // Builds a structure on the board
