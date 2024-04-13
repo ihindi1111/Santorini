@@ -117,4 +117,42 @@ public final class Santorini {
             return false; // Failed to place the worker due to the tile being occupied or out of bounds.
         }
     }
+
+    /**
+     * Returns the board for the game
+     * @return The game board
+     */
+    public Board getBoard() {
+        return board;
+    }
+
+    /**
+     * Returns the players in the game
+     * @return The list of players
+     */
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Selects a worker at the specified coordinates
+     * @param x The x-coordinate of the worker
+     * @param y The y-coordinate of the worker
+     * @return The worker at the specified coordinates, or null if no worker is present
+     */
+    public Worker selectWorker(int x, int y) {
+        if (board.getTile(x, y).getWorker() == null) return null;
+        return board.getTile(x, y).getWorker();
+    }
+
+    /**
+     * Returns the visual representation of a tile at the specified coordinates
+     * @param x The x-coordinate of the tile
+     * @param y The y-coordinate of the tile
+     * @return The visual representation of the tile
+     */
+    public String visualRepresentation(int x, int y) {
+        return board.getTile(x, y).visualRepresentation();
+    }
+
 }
