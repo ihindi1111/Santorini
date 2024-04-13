@@ -86,7 +86,6 @@ export default function Game() {
 
 function DisplayCell({cell, index, play}: { cell: Cell, index: number, play: (x: number, y: number) => void }) {
   const playableText = cell.playable ? 'playable' : '';
-  console.log(`Rendering cell at index ${index}:`, cell);
   if (cell.playable) {
     /**
      * key is used for React when given a list of items. It
@@ -94,12 +93,10 @@ function DisplayCell({cell, index, play}: { cell: Cell, index: number, play: (x:
      * which list item need to be updated.
      * @see https://reactjs.org/docs/lists-and-keys.html#keys
      */
-    console.log(`Cell at index ${index} is playable and clickable.`);
     return (
         <div className={`cell ${playableText}`} onClick={() => play(cell.x, cell.y)}>{cell.text}</div>
     )
   } else
-    console.log(`Cell at index ${index} is not playable and not clickable.`);
     return (
       <div className={`cell ${playableText}`}>{cell.text}</div>
     )

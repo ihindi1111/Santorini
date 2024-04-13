@@ -220,7 +220,6 @@ public final class Santorini {
                 handleWorkerPlacement(x, y);
                 break;
             case SELECT_WORKER:
-                System.out.println("Selecting worker");
                 selectedWorker = selectWorker(x, y);
                 if (selectedWorker != null && selectedWorker.getPlayer() == currPlayer.getPlayerID()) {
                     currentPhase = TurnPhase.MOVE;
