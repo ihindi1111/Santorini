@@ -1,10 +1,10 @@
 package edu.cmu.cs214.hw3.santorini.backend.games;
 
-import edu.cmu.cs.cs214.hw3.santorini.backend.Game;
-import edu.cmu.cs.cs214.hw3.santorini.backend.Player;
-import edu.cmu.cs.cs214.hw3.santorini.backend.Board;
-import edu.cmu.cs.cs214.hw3.santorini.backend.Tile;
-import edu.cmu.cs.cs214.hw3.santorini.backend.TurnPhase;
+import edu.cmu.cs214.hw3.santorini.backend.Board;
+import edu.cmu.cs214.hw3.santorini.backend.Worker;
+import edu.cmu.cs214.hw3.santorini.backend.Player;
+import edu.cmu.cs214.hw3.santorini.backend.Tile;
+import edu.cmu.cs214.hw3.santorini.backend.TurnPhase;
 
 import java.util.ArrayList;
 import java.util.List;
