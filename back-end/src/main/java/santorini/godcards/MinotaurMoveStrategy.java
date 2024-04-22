@@ -3,6 +3,7 @@ package godcards;
 import components.Tile;
 import components.Worker;
 import components.IBuildStrategy;
+import components.Board;
 
 public class MinotaurMoveStrategy {
     @Override
