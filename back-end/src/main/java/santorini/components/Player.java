@@ -9,6 +9,8 @@ public class Player {
     private int playerID;
     private Worker[] workers;
     private String playerName;
+    private IBuildStrategy buildStrategy;
+    private IMoveStrategy moveStrategy;
 
     /**
     * Constructor that initializes a player with a reference to the game board
@@ -43,6 +45,31 @@ public class Player {
     @Override
     public String toString() {
         return this.playerName;
+    }
+
+    public boolean hasMoveStrategy() {
+        return moveStrategy != null;
+    }
+
+    public boolean hasBuildStrategy() {
+        return buildStrategy != null;
+    }
+
+    // Getter and setter for strategies
+    public IBuildStrategy getBuildStrategy() {
+        return buildStrategy;
+    }
+
+    public void setBuildStrategy(IBuildStrategy strategy) {
+        this.buildStrategy = strategy;
+    }
+
+    public IMoveStrategy getMoveStrategy() {
+        return moveStrategy;
+    }
+
+    public void setMoveStrategy(IMoveStrategy strategy) {
+        this.moveStrategy = strategy;
     }
 
 }
