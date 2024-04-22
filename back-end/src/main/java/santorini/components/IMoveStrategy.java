@@ -1,5 +1,5 @@
 package components;
 
-public class IMoveStrategy {
+public interface IMoveStrategy {
     boolean isValidMove(Worker worker, Tile fromTile, Tile toTile);
 }
