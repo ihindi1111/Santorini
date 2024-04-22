@@ -5,7 +5,7 @@ import components.Worker;
 import components.IBuildStrategy;
 import components.Board;
 
-public class MinotaurMoveStrategy implements IMoveStrategy{
+public class MinotaurMoveStrategy implements IMoveStrategy {
     @Override
     public boolean isValidMove(Worker worker, Tile fromTile, Tile toTile) {
         if (toTile.isOccupied() && !toTile.hasDome()) {
