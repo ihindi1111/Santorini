@@ -2,6 +2,7 @@ package godcards;
 
 import components.Tile;
 import components.Worker;
+import components.IBuildStrategy;
 
 public class Hephaestus implements IBuildStrategy {
     @Override
