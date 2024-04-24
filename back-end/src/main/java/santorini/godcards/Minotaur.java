@@ -2,10 +2,10 @@ package godcards;
 
 import components.Tile;
 import components.Worker;
-import components.IBuildStrategy;
+import interfaces.IBuildStrategy;
 import components.Board;
 
-public class MinotaurMoveStrategy implements IMoveStrategy {
+public class Minotaur implements IMoveStrategy {
     @Override
     public boolean isValidMove(Worker worker, Tile fromTile, Tile toTile) {
         if (toTile.isOccupied() && !toTile.hasDome()) {

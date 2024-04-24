@@ -2,9 +2,9 @@ package godcards;
 
 import components.Tile;
 import components.Worker;
-import components.IBuildStrategy;
+import interfaces.IBuildStrategy;
 
-public class DemeterBuildStrategy implements IBuildStrategy {
+public class Demeter implements IBuildStrategy {
 
     @Override
     public boolean performBuild(Worker worker, Tile previousTile, Tile buildTile) {
