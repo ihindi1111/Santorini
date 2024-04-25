@@ -11,6 +11,7 @@ public class Player {
     private String playerName;
     private IBuildStrategy buildStrategy;
     private IMoveStrategy moveStrategy;
+    private IWinStrategy winStrategy;
 
     /**
     * Constructor that initializes a player with a reference to the game board
@@ -70,6 +71,14 @@ public class Player {
 
     public void setMoveStrategy(IMoveStrategy strategy) {
         this.moveStrategy = strategy;
+    }
+
+    public IWinStrategy getWinStrategy() {
+        return winStrategy;
+    }
+
+    public void setWinStrategy(IWinStrategy strategy) {
+        this.winStrategy = strategy;
     }
 
 }
