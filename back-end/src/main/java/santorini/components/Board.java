@@ -79,4 +79,31 @@ public class Board {
         if (getTile(newX, newY).getLevel() - getTile(worker.getX(), worker.getY()).getLevel() > MAX_CLIMB_HEIGHT) return false; // Too high to climb
         return true;
     }
+
+    /**
+     * 
+     * 
+     * @return The size of the board
+     */
+    public int getBOARD_SIZE() {
+        return BOARD_SIZE;
+    }
+
+    /**
+     * 
+     * 
+     * @return The maximum height a worker can climb
+     */
+    public int getMAX_CLIMB_HEIGHT() {
+        return MAX_CLIMB_HEIGHT;
+    }
+
+    /**
+     * 
+     * 
+     * @return The limit of adjacent tiles
+     */
+    public int getADJACENT_LIMIT() {
+        return ADJACENT_LIMIT;
+    }
 }

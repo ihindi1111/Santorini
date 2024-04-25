@@ -1,5 +1,7 @@
 package godcards;
 
+import components.Board;
+
 import components.Tile;
 import components.Worker;
 import interfaces.IBuildStrategy;
@@ -17,7 +19,7 @@ public class Demeter implements IBuildStrategy {
     }
 
     @Override
-    public boolean isValidBuild(Board board, Tile previousTile, int x, int y) {
+    public boolean isValidBuild(Worker worker, Board board, Tile previousTile, int x, int y) {
         Tile buildTile = board.getTile(x, y);
 
         // If the player is clicking on the same tile again, it's a choice to skip the second build
@@ -26,11 +28,11 @@ public class Demeter implements IBuildStrategy {
         } //might need fixing
         
         if (buildTile.getX() == previousTile.getX() && buildTile.getY() == previousTile.getY()) return false;
-        if (getTile(buildX, buildY) == null) return false; // Out of bounds
-        if (buildX < 0 || buildX >= BOARD_SIZE || buildY < 0 || buildY >= BOARD_SIZE) return false; // Out of bounds
-        int deltaX = Math.abs(worker.getX() - buildX);
-        int deltaY = Math.abs(worker.getY() - buildY);
-        if ((deltaX + deltaY) != ADJACENT_LIMIT) return false; //Not nearby
+        if (board.getTile(x, y) == null) return false; // Out of bounds
+        if (x < 0 || x >= board.getBOARD_SIZE() || y < 0 || y >= board.getBOARD_SIZE()) return false; // Out of bounds
+        int deltaX = Math.abs(worker.getX() - x);
+        int deltaY = Math.abs(worker.getY() - y);
+        if ((deltaX + deltaY) != board.getADJACENT_LIMIT()) return false; //Not nearby
         return true;
     }
 
