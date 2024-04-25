@@ -1,5 +1,5 @@
 package interfaces;
 
 public interface IWinStrategy {
-    boolean checkForWin(Worker worker, Tile fromTile, Tile toTile);
+    boolean checkForWin(Worker worker, Board board, int x, int y);
 }
