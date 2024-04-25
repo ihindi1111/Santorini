@@ -6,6 +6,10 @@ import components.Player;
 import components.Tile;
 import components.TurnPhase;
 
+import interfaces.IMoveStrategy;
+import interfaces.IBuildStrategy;
+import interfaces.IWinStrategy;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -229,6 +233,20 @@ public final class Santorini {
         else currentPhase = TurnPhase.BUILD;
     }
 
+    public void handleGodBuild(Worker worker, int x, int y) {
+        boolean built = currPlayer.getBuildStrategy().performBuild(worker, x, y, board);
+        IBuildStrategy buildStrategy = currPlayer.getBuildStrategy();
+        if (!buildStrategy.firstBuild()) {
+            if (selectedWorker != null && build(selectedWorker, x, y)) buildStrategy.setFirstBuild(true);
+        }
+        else {
+            buildStrategy.performBuild(worker, x, y, board);
+            buildStrategy.setFirstBuild(false);
+            switchPlayer();
+            currentPhase = TurnPhase.SELECT_WORKER;
+        }
+    }
+
     /**
      * Plays the game based on the current phase and the coordinates of the move
      * @param x The x-coordinate of the move
@@ -266,7 +284,8 @@ public final class Santorini {
                 }
                 break;
             case BUILD:
-                if (selectedWorker != null && build(selectedWorker, x, y)) {
+                if (currPlayer.hasBuildStrategy()) handleGodBuild(selectedWorker, x, y);
+                else if (selectedWorker != null && build(selectedWorker, x, y)) {
                     selectedWorker = null;
                     currentPhase = TurnPhase.SELECT_WORKER;
                 }

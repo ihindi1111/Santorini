@@ -23,5 +23,6 @@ public interface IBuildStrategy {
      */
     boolean performBuild(Worker worker, Tile previousTile, int x, int y);
 
-    boolean hasAdditionalBuild();
+    boolean firstBuild();
+    void setFirstBuild(boolean firstBuild);
 }
