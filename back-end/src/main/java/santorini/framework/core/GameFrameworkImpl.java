@@ -168,4 +168,31 @@ public class GameFrameworkImpl implements GameFramework {
     public boolean hasGame(){
         return currentPlugin != null;
     }
+
+    public void setupGodCardSelection() {
+        // We use a simple grid, for example, a 5x5 grid as a selection board
+        Cell[] selectionBoard = new Cell[5 * 5];
+        int index = 0;
+
+        // Adding build strategies to the selection board
+        for (String key : godCards.buildStrategies.keySet()) {
+            if (index >= 25) break;  // Prevent exceeding the grid size
+            selectionBoard[index++] = new Cell(key, true, "Build");
+        }
+        // Adding move strategies to the selection board
+        for (String key : godCards.moveStrategies.keySet()) {
+            if (index >= 25) break;
+            selectionBoard[index++] = new Cell(key, true, "Move");
+        }
+        // Adding win strategies to the selection board
+        for (String key : godCards.winStrategies.keySet()) {
+            if (index >= 25) break;
+            selectionBoard[index++] = new Cell(key, true, "Win");
+        }
+        // Fill remaining cells with empty cells if any
+        while (index < 25) {
+            selectionBoard[index++] = new Cell("", false, "");
+        }
+        gameState.updateCells(selectionBoard);  // Update GameState with the new cells for selection
+    }
 }

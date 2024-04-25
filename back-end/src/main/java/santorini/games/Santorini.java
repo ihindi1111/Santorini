@@ -5,6 +5,7 @@ import components.Worker;
 import components.Player;
 import components.Tile;
 import components.TurnPhase;
+import componenets.GodCards;
 
 import interfaces.IMoveStrategy;
 import interfaces.IBuildStrategy;
@@ -22,6 +23,7 @@ public final class Santorini {
     private TurnPhase currentPhase = TurnPhase.PLACE_WORKERS;
     private boolean workersPlaced = false;
     private Worker selectedWorker;
+    private GodCards godCards;
 
     /**
      * Constructor for Santorini game initializes the board and players.
@@ -34,6 +36,7 @@ public final class Santorini {
         }
         currPlayer = players.get(0);
         this.gameWon = false;
+        this.godCards = new GodCards();
     }
 
     
