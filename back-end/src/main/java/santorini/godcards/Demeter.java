@@ -8,12 +8,16 @@ public class Demeter implements IBuildStrategy {
 
     @Override
     public boolean performBuild(Worker worker, Tile previousTile, Tile buildTile) {
-        if (buildTile.getX() == previousTile.getX() && buildTile.getY() == previousTile.getY()) {
-            return false;  // Cannot build on the same tile twice
-        }
-        if (buildTile.build()) {
+        if (isValidBuild(worker, buildTile, buildTile)) {
+            buildTile.build();
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isValidBuild(Worker worker, Tile previousTile, Tile buildTile) {
+        if (buildTile.getX() == previousTile.getX() && buildTile.getY() == previousTile.getY()) return false;
+        return true;
     }
 }
