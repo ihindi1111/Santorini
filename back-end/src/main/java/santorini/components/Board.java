@@ -1,5 +1,8 @@
 package components;
 
+import interfaces.IBuildStrategy;
+import interfaces.IMoveStrategy;
+
 public class Board {
     private static final int BOARD_SIZE = 5;
     private static final int MAX_CLIMB_HEIGHT = 1;
