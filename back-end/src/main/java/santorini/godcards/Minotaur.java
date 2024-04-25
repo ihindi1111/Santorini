@@ -7,6 +7,7 @@ import interfaces.IMoveStrategy;
 import components.Board;
 
 public class Minotaur implements IMoveStrategy {
+
     @Override
     public boolean isValidMove(Worker worker, Tile fromTile, Tile toTile, Board board) {
         if (toTile.isOccupied() && !toTile.hasDome()) {
@@ -57,7 +58,12 @@ public class Minotaur implements IMoveStrategy {
     }
 
     @Override
-    public boolean hasAdditionalMove() {
+    public boolean hasPerformedFirstMove() {
+        return false;
+    }
+    
+    @Override
+    public boolean hasSecondMove() {
         return false;
     }
 }

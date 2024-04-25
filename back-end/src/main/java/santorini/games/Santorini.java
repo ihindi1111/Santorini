@@ -208,10 +208,13 @@ public final class Santorini {
 
     public void handleGodMove(Worker worker, int x, int y) {
         boolean placed = currPlayer.getMoveStrategy().performMove(worker, x, y, board);
-        if (!currPlayer.getMoveStrategy().hasPerformedFirstMove()) {
-            if (placed) currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+        if (!currPlayer.getMoveStrategy().hasSecondMove()) {
+            if (placed) {
+                currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+                currentPhase = TurnPhase.BUILD;
+            }
         }
-        else if (currPlayer.getMoveStrategy().hasSecondMove()) {
+        else if (currPlayer.getMoveStrategy().hasSecondMove() && hasPerformedFirstMove()) {
             if (placed) {
                 currPlayer.getMoveStrategy().performMove(worker, x, y, board);
                 currentPhase = TurnPhase.BUILD;
