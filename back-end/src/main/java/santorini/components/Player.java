@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import interfaces.IBuildStrategy;
+import interfaces.IMoveStrategy;
+import interfaces.IWinStrategy;
+
 public class Player {
     private int playerID;
     private Worker[] workers;
