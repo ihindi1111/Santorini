@@ -1,5 +1,9 @@
 package interfaces;
 
+import components.Board;
+import components.Tile;
+import components.Worker;
+
 public interface IBuildStrategy {
     /**
      * Checks if a build operation is valid.
@@ -19,5 +23,5 @@ public interface IBuildStrategy {
      */
     boolean performBuild(Worker worker, Tile previousTile, int x, int y);
 
-    boolean hasAdditionalMove();
+    boolean hasAdditionalBuild();
 }
