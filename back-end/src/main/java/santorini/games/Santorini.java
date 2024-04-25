@@ -74,7 +74,7 @@ public final class Santorini {
      * @return True if the move was successful, false otherwise
      */
     public boolean moveWorker(Worker worker, int newX, int newY) {
-        if (board.isValidMove(worker, newX, newY)) {
+        if (board.isValidMove(currPlayer, worker, newX, newY)) {
             board.getTile(worker.getX(), worker.getY()).setWorker(null);
             Tile moving = board.getTile(newX, newY);
             moving.setWorker(worker);
@@ -92,7 +92,7 @@ public final class Santorini {
      * @return true if the build is valid, false otherwise
      */
     public boolean build(Worker worker, int buildX, int buildY) {
-        if (board.isValidBuild(worker, buildX, buildY)) {
+        if (board.isValidBuild(currPlayer, worker, buildX, buildY)) {
             Tile tileToBuild = board.getTile(buildX, buildY);
             tileToBuild.build();
             switchPlayer();
@@ -206,6 +206,16 @@ public final class Santorini {
         return true;
     }
 
+    public void handleGodMove(Worker worker, int x, int y) {
+        if (currPlayer.hasMoveStrategy()) {
+            currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+            if (currPlayer.getMoveStrategy().hasAdditionalMove()) {
+                currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+                currentPhase = TurnPhase.BUILD;
+            }
+        }
+    }
+
     /**
      * Plays the game based on the current phase and the coordinates of the move
      * @param x The x-coordinate of the move
@@ -226,7 +236,11 @@ public final class Santorini {
                 }
                 break;
             case MOVE:
-                if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
+                if (currPlayer.hasMoveStrategy() || currPlayer.hasWinStrategy()) handleGodMove(selectedWorker, x, y);
+                else if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
+                    if (currPlayer.hasWinStrategy()) {
+                        currPlayer.getWinStrategy().checkForWin(selectedWorker, x, y, board);
+                    }
                     if (checkForWin(selectedWorker)) {
                         gameWon = true;
                         return;
