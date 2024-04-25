@@ -242,6 +242,7 @@ public final class Santorini {
         else {
             buildStrategy.performBuild(worker, x, y, board);
             buildStrategy.setFirstBuild(false);
+            selectedWorker = null;
             switchPlayer();
             currentPhase = TurnPhase.SELECT_WORKER;
         }
