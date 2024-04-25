@@ -17,5 +17,5 @@ public interface IBuildStrategy {
      * @param buildTile The tile on which the build is being executed.
      * @return true if the build was successfully performed, false otherwise.
      */
-    boolean performBuild(Worker worker, Tile previousTile, Tile buildTile);
+    boolean performBuild(Worker worker, Tile previousTile, int x, int y);
 }

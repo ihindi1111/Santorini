@@ -14,10 +14,11 @@ public class Hephaestus implements IBuildStrategy {
         return false;
     }
 
-    public boolean isValidBuild(Worker worker, Tile previousTile, Tile buildTile) {
-        if (buildTile.getLevel() < 3) {
-            return false;  // Cannot build on the same tile twice
+    public boolean isValidBuild(Worker worker, Tile previousTile, int x, int y) {
+        if (x != previousTile.getX() && y != previousTile.getY()) return false;  // Must build on the same tile twice
+        if (previousTile.getLevel() < 3) {
+            return true;
         }
-        return true;
+        return false;
     }
 }
