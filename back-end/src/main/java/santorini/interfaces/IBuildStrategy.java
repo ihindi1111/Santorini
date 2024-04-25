@@ -18,4 +18,6 @@ public interface IBuildStrategy {
      * @return true if the build was successfully performed, false otherwise.
      */
     boolean performBuild(Worker worker, Tile previousTile, int x, int y);
+
+    boolean hasAdditionalMove();
 }

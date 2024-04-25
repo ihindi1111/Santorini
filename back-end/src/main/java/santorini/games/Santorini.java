@@ -207,13 +207,17 @@ public final class Santorini {
     }
 
     public void handleGodMove(Worker worker, int x, int y) {
-        if (currPlayer.hasMoveStrategy()) {
-            currPlayer.getMoveStrategy().performMove(worker, x, y, board);
-            if (currPlayer.getMoveStrategy().hasAdditionalMove()) {
+        boolean placed = currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+        if (!currPlayer.getMoveStrategy().hasPerformedFirstMove()) {
+            if (placed) currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+        }
+        else if (currPlayer.getMoveStrategy().hasSecondMove()) {
+            if (placed) {
                 currPlayer.getMoveStrategy().performMove(worker, x, y, board);
                 currentPhase = TurnPhase.BUILD;
             }
         }
+        else currentPhase = TurnPhase.BUILD;
     }
 
     /**
@@ -236,7 +240,7 @@ public final class Santorini {
                 }
                 break;
             case MOVE:
-                if (currPlayer.hasMoveStrategy() || currPlayer.hasWinStrategy()) handleGodMove(selectedWorker, x, y);
+                if (currPlayer.hasMoveStrategy()) handleGodMove(selectedWorker, x, y);
                 else if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
                     if (currPlayer.hasWinStrategy()) {
                         currPlayer.getWinStrategy().checkForWin(selectedWorker, x, y, board);
