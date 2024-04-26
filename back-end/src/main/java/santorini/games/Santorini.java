@@ -249,7 +249,7 @@ public final class Santorini {
     public void handleGodBuild(Worker worker, int x, int y) {
         IBuildStrategy buildStrategy = currPlayer.getBuildStrategy();
         if (!buildStrategy.firstBuild()) {
-            if (selectedWorker != null && buildStrategy.performBuild(currPlayer, worker, x, y, board)) return;
+            if (selectedWorker != null && buildStrategy.performBuild(currPlayer, worker, board, x, y)) return;
         }
         else {
             boolean built = currPlayer.getBuildStrategy().performBuild(currPlayer, worker, board, x, y);

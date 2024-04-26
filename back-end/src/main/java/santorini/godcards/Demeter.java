@@ -14,13 +14,16 @@ public class Demeter implements IBuildStrategy {
     @Override
     public boolean performBuild(Player player, Worker worker, Board board, int x, int y) {
         if (isValidBuild(player, worker, board, x, y)) {
-            board.getTile(x, y).build();
-            if (!firstBuild()) {
+            if (!(x == worker.getX() && y == worker.getY())) {
+                board.getTile(x, y).build(); // Only build if it's not a pass
+            }
+            if (!firstBuild) {
                 firstBuild = true;
-                previousTile = board.getTile(x, y); // Remember the tile of the first build
+                previousTile = board.getTile(x, y);  // Remember the tile of the first build
             } else {
-                firstBuild = false; // Reset for next turn
-                previousTile = null; // Clear after second build
+                // Reset after optional second build
+                firstBuild = false;
+                previousTile = null;
             }
             return true;
         }
@@ -32,15 +35,20 @@ public class Demeter implements IBuildStrategy {
         Tile buildTile = board.getTile(x, y);
 
         // Check if out of bounds or null tile
-        if (buildTile == null || x < 0 || x >= board.getBOARD_SIZE() || y < 0 || y >= board.getBOARD_SIZE()) return false;
+        if (buildTile == null || x < 0 || x >= board.getBOARD_SIZE() || y < 0 || y >= board.getBOARD_SIZE()) {
+            return false;
+        }
 
-        // If it's the first build, any adjacent tile is valid (not the same tile)
+        // First build check: Must be valid according to board's rules
         if (!firstBuild) {
             return board.isValidBuild(player, worker, x, y);
         } else {
-            // For the second build, the tile must be different unless skipping
-            if (buildTile == previousTile) return true; // Allow skip by clicking the same tile
-            return buildTile != previousTile && !buildTile.isOccupied();
+            if (x == worker.getX() && y == worker.getY()) return true; // Passing the second build
+            if (buildTile == previousTile) return false;
+            int deltaX = Math.abs(worker.getX() - x);
+            int deltaY = Math.abs(worker.getY() - y);
+            if ((deltaX == 1 && deltaY == 0) || (deltaX == 0 && deltaY == 1)) return buildTile == previousTile || (buildTile != previousTile && !buildTile.isOccupied());
+            return false;
         }
     }
 

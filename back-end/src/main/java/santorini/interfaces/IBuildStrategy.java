@@ -3,6 +3,7 @@ package interfaces;
 import components.Board;
 import components.Tile;
 import components.Worker;
+import components.Player;
 
 public interface IBuildStrategy {
     /**
