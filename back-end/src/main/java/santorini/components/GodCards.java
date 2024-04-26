@@ -6,9 +6,9 @@ import godcards.Hephaestus;
 import godcards.Minotaur;
 import godcards.Pan;
 
-import godcards.IBuildStrategy;
-import godcards.IWinStrategy;
-import godcards.IMoveStrategy;
+import interfaces.IBuildStrategy;
+import interfaces.IWinStrategy;
+import interfaces.IMoveStrategy;
 
 public class GodCards {
     private Map<String, IBuildStrategy> buildStrategies = new HashMap<>();
