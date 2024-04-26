@@ -16,6 +16,7 @@ import interfaces.IWinStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 public final class Santorini {
     private Board board;
@@ -245,7 +246,10 @@ public final class Santorini {
         boolean built = currPlayer.getBuildStrategy().performBuild(worker, board, x, y);
         IBuildStrategy buildStrategy = currPlayer.getBuildStrategy();
         if (!buildStrategy.firstBuild()) {
-            if (selectedWorker != null && build(selectedWorker, x, y)) buildStrategy.setFirstBuild(true);
+            if (selectedWorker != null && build(selectedWorker, x, y)) {
+                buildStrategy.setFirstBuild(true);
+                buildStrategy.setPreviousTile(board.getTile(x, y));
+            }
         }
         else {
             buildStrategy.performBuild(worker, x, y, board);
@@ -359,5 +363,9 @@ public final class Santorini {
 
     public GodCards getGodCards() {
         return godCards;
+    }
+
+    public GodCardManager getGodCardManager() {
+        return godCardManager;
     }
 }

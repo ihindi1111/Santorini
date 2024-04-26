@@ -7,9 +7,10 @@ import interfaces.IBuildStrategy;
 
 public class Hephaestus implements IBuildStrategy {
     private boolean firstBuild = false;
+    private Tile previousTile = null;
 
     @Override
-    public boolean performBuild(Worker worker, Board board, Tile previousTile, int x, int y) {
+    public boolean performBuild(Worker worker, Board board, int x, int y) {
         if (isValidBuild(worker, board, previousTile, x, y)) {  // Only add a block if it won't create a dome
             previousTile.build();  // Add another block
             return true;
@@ -31,5 +32,9 @@ public class Hephaestus implements IBuildStrategy {
 
     public void setFirstBuild(boolean firstBuild) {
         this.firstBuild = firstBuild;
+    }
+
+    public void setPreviousTile(Tile previousTile) {
+        this.previousTile = previousTile;
     }
 }

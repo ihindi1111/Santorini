@@ -12,7 +12,7 @@ public interface IBuildStrategy {
      * @param buildTile The tile on which the building is attempted.
      * @return true if the build is valid, false otherwise.
      */
-    boolean isValidBuild(Worker worker, Board board, Tile previousTile, int x, int y);
+    boolean isValidBuild(Worker worker, Board board, int x, int y);
 
     /**
      * Performs the build operation on the specified tile.
@@ -21,8 +21,9 @@ public interface IBuildStrategy {
      * @param buildTile The tile on which the build is being executed.
      * @return true if the build was successfully performed, false otherwise.
      */
-    boolean performBuild(Worker worker, Board board, Tile previousTile, int x, int y);
+    boolean performBuild(Worker worker, Board board, int x, int y);
 
     boolean firstBuild();
     void setFirstBuild(boolean firstBuild);
+    void setPreviousTile(Tile previousTile);
 }

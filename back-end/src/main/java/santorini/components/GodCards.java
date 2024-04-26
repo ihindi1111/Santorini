@@ -61,4 +61,10 @@ public class GodCards {
     public Map<String, IWinStrategy> getWinStrategies() {
         return winStrategies;
     }
+
+    public boolean isValidSelection(String godCardName) {
+        return buildStrategies.containsKey(godCardName) ||
+               moveStrategies.containsKey(godCardName) ||
+               winStrategies.containsKey(godCardName);
+    }
 }

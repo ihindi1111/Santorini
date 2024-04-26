@@ -1,3 +1,4 @@
+plugin/SantoriniPlugin.class
 components/Tile.class
 interfaces/IMoveStrategy.class
 interfaces/IBuildStrategy.class
@@ -10,5 +11,6 @@ components/Worker.class
 components/GodCardManager.class
 interfaces/IWinStrategy.class
 framework/gui/Cell.class
+plugin/SantoriniPlugin$1.class
 components/TurnPhase.class
 framework/core/GameFramework.class

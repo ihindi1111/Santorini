@@ -8,9 +8,10 @@ import interfaces.IBuildStrategy;
 
 public class Demeter implements IBuildStrategy {
     private boolean firstBuild = false;
+    private Tile previousTile = null;
 
     @Override
-    public boolean performBuild(Worker worker, Board board, Tile previousTile, int x, int y) {
+    public boolean performBuild(Worker worker, Board board, int x, int y) {
         if (isValidBuild(worker, board, previousTile, x, y)) {
             board.getTile(x, y).build();
             return true;
@@ -19,7 +20,7 @@ public class Demeter implements IBuildStrategy {
     }
 
     @Override
-    public boolean isValidBuild(Worker worker, Board board, Tile previousTile, int x, int y) {
+    public boolean isValidBuild(Worker worker, Board board, int x, int y) {
         Tile buildTile = board.getTile(x, y);
 
         // If the player is clicking on the same tile again, it's a choice to skip the second build
@@ -42,5 +43,9 @@ public class Demeter implements IBuildStrategy {
 
     public void setFirstBuild(boolean firstBuild) {
         this.firstBuild = firstBuild;
+    }
+
+    public void setPreviousTile(Tile previousTile) {
+        this.previousTile = previousTile;
     }
 }

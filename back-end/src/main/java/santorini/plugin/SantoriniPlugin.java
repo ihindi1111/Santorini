@@ -90,7 +90,7 @@ public class SantoriniPlugin implements GamePlugin<String> {
         for (int i = 0; i < Santorini.SIZE * Santorini.SIZE; i++) {
             int x = i % Santorini.SIZE;
             int y = i / Santorini.SIZE;
-            String cardName = game.godCardManager.getCardAtPosition(x, y, Santorini.SIZE);
+            String cardName = game.getGodCardManager().getCardAtPosition(x, y, Santorini.SIZE);
             if (cardName != null) {
                 framework.setSquare(x, y, cardName);
             }
