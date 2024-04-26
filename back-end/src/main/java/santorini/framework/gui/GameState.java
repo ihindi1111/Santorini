@@ -103,10 +103,6 @@ public class GameState {
     //     }
     // }
 
-    public void setGodCardSelectionActive(boolean godCardSelectionActive) {
-        isGodCardSelectionActive = godCardSelectionActive;
-    }
-
     public Cell[] getCells() {
         return this.cells;
     }

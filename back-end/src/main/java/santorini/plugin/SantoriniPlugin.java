@@ -166,7 +166,7 @@ public class SantoriniPlugin implements GamePlugin<String> {
 
         // Check the validity based on the current phase of the game
         switch (game.getPhase()) {
-            case SELECT_GOD_WORKER:
+            case SELECT_GOD_CARD:
                 // Check if the chosen square corresponds to a selectable god card
                 String godCardName = game.getGodCardManager().getCardAtPosition(x, y, WIDTH);
                 return godCardName != null && game.getGodCards().isValidSelection(godCardName);
