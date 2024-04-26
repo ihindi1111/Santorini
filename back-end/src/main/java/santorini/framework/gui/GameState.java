@@ -15,7 +15,6 @@ public class GameState {
     private final String numColStyle;
     private final String currentPlayer;
     private final String gameOverMsg;
-    private boolean isGodCardSelectionActive;
 
     private GameState(String name, String footer, Cell[] cells, Plugin[] plugins, String numColStyle, String currentPlayer, String gameOverMsg) {
         this.name = name;
@@ -25,7 +24,6 @@ public class GameState {
         this.numColStyle = numColStyle;
         this.currentPlayer = currentPlayer;
         this.gameOverMsg = gameOverMsg;
-        this.isGodCardSelectionActive = false;
     }
 
     public static GameState forGame(GameFrameworkImpl game) {
