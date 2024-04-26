@@ -32,7 +32,6 @@ public final class Santorini {
     private boolean gameWon;
     public static final int SIZE = 5;
     private TurnPhase currentPhase = TurnPhase.SELECT_GOD_CARD;
-    private boolean workersPlaced = false;
     private Worker selectedWorker;
     private GodCards godCards;
     private Tile startTile;
@@ -355,14 +354,6 @@ public final class Santorini {
      */
     public Worker getSelectedWorker() {
         return selectedWorker;
-    }
-
-    /**
-     * Returns whether workers have been placed on the board
-     * @return True if workers have been placed, false otherwise
-     */
-    private boolean getWorkersPlaced() {
-        return workersPlaced;
     }
 
     public GodCards getGodCards() {
