@@ -246,7 +246,6 @@ public final class Santorini {
     }
 
     public void handleGodBuild(Worker worker, int x, int y) {
-        boolean built = currPlayer.getBuildStrategy().performBuild(worker, board, x, y);
         IBuildStrategy buildStrategy = currPlayer.getBuildStrategy();
         if (!buildStrategy.firstBuild()) {
             if (selectedWorker != null && build(selectedWorker, x, y)) {
@@ -255,11 +254,13 @@ public final class Santorini {
             }
         }
         else {
-            buildStrategy.performBuild(worker, board, x, y);
-            buildStrategy.setFirstBuild(false);
-            selectedWorker = null;
-            switchPlayer();
-            currentPhase = TurnPhase.SELECT_WORKER;
+            boolean built = currPlayer.getBuildStrategy().performBuild(worker, board, x, y);
+            if (built) {
+                buildStrategy.setFirstBuild(false);
+                selectedWorker = null;
+                switchPlayer();
+                currentPhase = TurnPhase.SELECT_WORKER;
+            }
         }
     }
 
@@ -289,7 +290,6 @@ public final class Santorini {
             } else if (godCards.getWinStrategy(godCardName) != null) {
                 currPlayer.setWinStrategy(godCards.getWinStrategy(godCardName));
             }
-
             switchPlayer();
         }
         if (godCardsSelected()) {
@@ -322,6 +322,7 @@ public final class Santorini {
             case MOVE:
                 if (currPlayer.hasMoveStrategy()) handleGodMove(selectedWorker, x, y);
                 else if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
+                    System.out.println("Reached");
                     if (currPlayer.hasWinStrategy()) {
                         currPlayer.getWinStrategy().checkForWin(selectedWorker, board, x, y);
                     }
@@ -330,6 +331,7 @@ public final class Santorini {
                         return;
                     }
                     currentPhase = TurnPhase.BUILD;
+                    System.out.println("YES!");
                 }
                 else {
                     selectedWorker = null;  // Move was not successful, reset the selected worker
@@ -337,6 +339,7 @@ public final class Santorini {
                 }
                 break;
             case BUILD:
+                System.out.println("Building");
                 if (currPlayer.hasBuildStrategy()) handleGodBuild(selectedWorker, x, y);
                 else if (selectedWorker != null && build(selectedWorker, x, y)) {
                     selectedWorker = null;

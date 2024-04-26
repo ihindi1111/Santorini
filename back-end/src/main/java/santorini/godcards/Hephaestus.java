@@ -20,7 +20,7 @@ public class Hephaestus implements IBuildStrategy {
 
     @Override
     public boolean isValidBuild(Worker worker, Board board, int x, int y) {
-        if (board.getTile(x, y) == previousTile) {
+        if (board.getTile(x, y) == previousTile || previousTile == null) {
             return true; // Skip the second build and end the building phase
         } //might need fixing
         else if (x != previousTile.getX() && y != previousTile.getY()) return false;  // Must build on the same tile twice

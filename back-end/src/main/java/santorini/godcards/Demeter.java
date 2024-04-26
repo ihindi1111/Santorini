@@ -24,7 +24,7 @@ public class Demeter implements IBuildStrategy {
         Tile buildTile = board.getTile(x, y);
 
         // If the player is clicking on the same tile again, it's a choice to skip the second build
-        if (buildTile == previousTile) {
+        if (buildTile == previousTile || previousTile == null) {
             return true; // Skip the second build and end the building phase
         } //might need fixing
         

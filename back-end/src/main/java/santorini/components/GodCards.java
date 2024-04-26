@@ -21,7 +21,7 @@ public class GodCards {
 
     public GodCards() {
         registerBuildCard("Demeter", new Demeter());
-        registerBuildCard("Hepheastus", new Hephaestus());
+        registerBuildCard("Hephaestus", new Hephaestus());
         registerMoveCard("Minotaur", new Minotaur());
         registerWinCard("Pan", new Pan());
     }
