@@ -9,9 +9,6 @@ import components.GodCards;
 
 import plugin.SantoriniPlugin;
 
-import interfaces.IMoveStrategy;
-import interfaces.IBuildStrategy;
-import interfaces.IWinStrategy;
 import interfaces.GodStrategy;
 
 import java.util.ArrayList;
@@ -239,12 +236,69 @@ public final class Santorini {
 
     private void handleGodAction(Worker worker, int x, int y) {
         GodStrategy godStrategy = currPlayer.getGodStrategy();
-        boolean performed = godStrategy.performAction(currPlayer, worker, board, x, y);
+        if (!godStrategy.hasPerformedFirstAction() && !godStrategy.hasSecondAction()) {
+            if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
+                if (checkForWin(worker)) {
+                    gameWon = true;
+                    return;
+                }
+
+                if (godStrategy.hasNum() == 1) currentPhase = TurnPhase.BUILD;
+                else if (godStrategy.hasNum() == 2) currentPhase = TurnPhase.SELECT_WORKER;
+            }
+        }
+        else if (!godStrategy.hasPerformedFirstAction() && godStrategy.hasSecondAction()) {
+            if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
+                if (checkForWin(worker)) {
+                    gameWon = true;
+                    return;
+                }
+            }
+        }
+        else if (godStrategy.hasPerformedFirstAction() && !godStrategy.hasSecondAction()) {
+            if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
+                if (checkForWin(worker)) {
+                    gameWon = true;
+                    return;
+                }
+                currentPhase = TurnPhase.BUILD;
+            }
+        }
+        else if (godStrategy.hasPerformedFirstAction() && godStrategy.hasSecondAction()) {
+            if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
+                if (checkForWin(worker)) {
+                    gameWon = true;
+                    return;
+                }
+                currentPhase = TurnPhase.BUILD;
+            }
+        }
+        else if (godStrategy.hasPerformedFirstAction() && !godStrategy.hasSecondAction()) {
+            if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
+                if (checkForWin(worker)) {
+                    gameWon = true;
+                    return;
+                }
+                currentPhase = TurnPhase.BUILD;
+            }
+        }
+        else if (godStrategy.hasPerformedFirstAction() && godStrategy.hasSecondAction()) {
+            if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
+                if (checkForWin(worker)) {
+                    gameWon = true;
+                    return;
+                }
+                currentPhase = TurnPhase.BUILD;
+            }
+        }
         if (!godStrategy.hasSecondAction()) {
             if (performed) {
                 if (godStrategy.hasMove()) {
                     checkForWin(worker);
                     currentPhase = TurnPhase.BUILD;
+                }
+                else if (godStrategy.hasBuild()) {
+                    currentPhase = TurnPhase.SELECT_WORKER;
                 }
             }
         }
@@ -253,6 +307,8 @@ public final class Santorini {
                 if (godStrategy.hasMove()) {
                     godStrategy.performAction(currPlayer, worker, board, x, y);
                     checkForWin(worker);
+                    godStrategy.setPhase(false);
+                    currentPhase = TurnPhase.BUILD;
                 }
             }
         }
@@ -262,7 +318,9 @@ public final class Santorini {
                 currentPhase = TurnPhase.BUILD;
             }
         }
-        else currentPhase = TurnPhase.BUILD;
+        else {
+            currentPhase = TurnPhase.BUILD;
+        }
     }
 
     private boolean godCardsSelected() {
@@ -328,8 +386,12 @@ public final class Santorini {
                             gameWon = true;
                             return;
                         }
-                    currentPhase = TurnPhase.BUILD;
                     }
+                    if (checkForWin(selectedWorker)) {
+                        gameWon = true;
+                        return;
+                    }
+                    currentPhase = TurnPhase.BUILD;
                 }
                 else {
                     selectedWorker = null;  // Move was not successful, reset the selected worker

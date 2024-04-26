@@ -5,8 +5,6 @@ import components.Board;
 import components.Tile;
 import components.Worker;
 import components.Player;
-import interfaces.IBuildStrategy;
-
 import interfaces.GodStrategy;
 
 public class Demeter implements GodStrategy {
@@ -46,7 +44,6 @@ public class Demeter implements GodStrategy {
                 previousTile = board.getTile(x, y);  // Remember the tile of the first build
             } else {
                 // Reset after optional second build
-                firstBuild = false;
                 previousTile = null;
             }
             return true;
@@ -65,18 +62,8 @@ public class Demeter implements GodStrategy {
     }
 
     @Override
-    public boolean hasMove() {
-        return false;
-    }
-
-    @Override
-    public boolean hasBuild() {
-        return true;
-    }
-
-    @Override
-    public boolean hasWin() {
-        return false;
+    public int hasNum() {
+        return 2;
     }
 }
 

@@ -3,7 +3,6 @@ package godcards;
 import components.Tile;
 import components.Worker;
 import components.Board;
-import interfaces.IBuildStrategy;
 import components.Player;
 
 import interfaces.GodStrategy;
@@ -28,7 +27,6 @@ public class Hephaestus implements GodStrategy {
         if (!hasPerformedFirstAction()) {
             return board.isValidBuild(player, worker, x, y);
         } else {
-            // The second build can be a pass if selecting the worker's tile
             if (x == worker.getX() && y == worker.getY()) {
                 return true; // Passing the second build
             }
@@ -49,7 +47,6 @@ public class Hephaestus implements GodStrategy {
                 previousTile = board.getTile(x, y);  // Remember the tile of the first build
             } else {
                 // Reset after optional second build
-                firstBuild = false;
                 previousTile = null;
             }
             return true;
@@ -67,19 +64,13 @@ public class Hephaestus implements GodStrategy {
         return true;
     }
 
-    @Override
-    public boolean hasMove() {
-        return false;
+    public boolean setPhase(boolean phase) {
+        return firstBuild = phase;
     }
 
     @Override
-    public boolean hasBuild() {
-        return true;
-    }
-
-    @Override
-    public boolean hasWin() {
-        return false;
+    public int hasNum() {
+        return 2;
     }
 }
 

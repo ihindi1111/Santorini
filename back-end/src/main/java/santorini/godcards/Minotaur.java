@@ -2,8 +2,6 @@ package godcards;
 
 import components.Tile;
 import components.Worker;
-import interfaces.IBuildStrategy;
-import interfaces.IMoveStrategy;
 import components.Board;
 import components.Player;
 
@@ -85,18 +83,8 @@ public class Minotaur implements GodStrategy {
     }
 
     @Override
-    public boolean hasMove() {
-        return true;
-    }
-
-    @Override
-    public boolean hasBuild() {
-        return false;
-    }
-
-    @Override
-    public boolean hasWin() {
-        return false;
+    public int hasNum() {
+        return 1;
     }
     
 }

@@ -2,7 +2,6 @@ package godcards;
 
 import components.Tile;
 import components.Worker;
-import interfaces.IWinStrategy;
 import components.Board;
 import components.Player;
 
@@ -35,17 +34,7 @@ public class Pan implements GodStrategy {
     }
 
     @Override
-    public boolean hasMove() {
-        return false;
-    }
-
-    @Override
-    public boolean hasBuild() {
-        return false;
-    }
-
-    @Override
-    public boolean hasWin() {
-        return true;
+    public int hasNum() {
+        return 0;
     }
 }

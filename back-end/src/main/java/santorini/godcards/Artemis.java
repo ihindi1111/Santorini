@@ -4,8 +4,6 @@
 // import components.Tile;
 // import components.Worker;
 
-// import interfaces.IMoveStrategy;
-
 
 // public class Artemis implements IMoveStrategy {
 //     private Tile initialTile = null; // To track the initial position of the move
