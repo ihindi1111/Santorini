@@ -205,7 +205,7 @@ public final class Santorini {
     
         // Check if all players have placed their workers before moving to the MOVE phase for the game
         if (allWorkersPlaced()) {
-            currentPhase = TurnPhase.MOVE;
+            currentPhase = TurnPhase.SELECT_WORKER;
         }
     }
 
