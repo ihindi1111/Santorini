@@ -12,7 +12,7 @@ public class Pan implements GodStrategy {
     
     @Override
     public boolean isValidAction(Player player, Worker worker, Board board, int x, int y) {
-        if (board.getTile(worker.getX(), worker.getY()).getLevel() - board.getTile(x,y).getLevel() >= 2) {
+        if (Math.abs(board.getTile(worker.getX(), worker.getY()).getLevel() - board.getTile(x,y).getLevel()) >= 2) {
             return true;
         }
         return false;
@@ -20,9 +20,7 @@ public class Pan implements GodStrategy {
 
     @Override
     public boolean performAction(Player player, Worker worker, Board board, int x, int y) {
-        if (board.getTile(worker.getX(), worker.getY()).getLevel() - board.getTile(x,y).getLevel() >= 2) {
-            return true;
-        }
+        if (isValidAction(player, worker, board, x, y)) return true;
         return false;
     }
 

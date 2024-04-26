@@ -20,8 +20,12 @@ public class GodCards {
         return strategies.containsKey(godCardName);
     }
 
-    // Method to get a god card name based on an index
+    // Method to get a god card name based on an index safely
     public String getCardAtPosition(int index) {
-        return new ArrayList<>(strategies.keySet()).get(index);
+        ArrayList<String> keys = new ArrayList<>(strategies.keySet());
+        if (index >= 0 && index < keys.size()) {
+            return keys.get(index);
+        }
+        return null; // Return null if the index is out of range
     }
 }

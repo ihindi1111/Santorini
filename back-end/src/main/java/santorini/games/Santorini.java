@@ -243,7 +243,6 @@ public final class Santorini {
         boolean performed = godStrategy.performAction(currPlayer, worker, board, x, y);
         if (!godStrategy.hasSecondAction()) {
             if (performed) {
-                godStrategy.performAction(currPlayer, worker, board, x, y);
                 if (godStrategy.hasMove()) {
                     checkForWin(worker);
                     currentPhase = TurnPhase.BUILD;
@@ -260,7 +259,6 @@ public final class Santorini {
         }
         else if (godStrategy.hasSecondAction() && godStrategy.hasPerformedFirstAction()) {
             if (performed) {
-                godStrategy.performAction(currPlayer, worker, board, x, y);
                 checkForWin(worker);
                 currentPhase = TurnPhase.BUILD;
             }
@@ -318,14 +316,21 @@ public final class Santorini {
                 }
                 break;
             case MOVE:
+                int x1 = selectedWorker.getX();
+                int y1 = selectedWorker.getY();
                 if (godStrategy.hasMove()) handleGodAction(selectedWorker, x, y);
                 else if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
                     if (godStrategy.hasWin()) {
-                        godStrategy.performAction(currPlayer, selectedWorker, board, x, y);
-                        gameWon = true;
-                        return;
+                        if (godStrategy.performAction(currPlayer, selectedWorker, board, x1, y1)) {
+                            gameWon = true;
+                            return;
+                        }
+                        if (checkForWin(selectedWorker)) {
+                            gameWon = true;
+                            return;
+                        }
+                    currentPhase = TurnPhase.BUILD;
                     }
-                    else currentPhase = TurnPhase.BUILD;
                 }
                 else {
                     selectedWorker = null;  // Move was not successful, reset the selected worker
