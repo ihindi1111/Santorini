@@ -9,6 +9,7 @@ import components.Tile;
 import components.TurnPhase;
 import components.Worker;
 import components.TurnPhase;
+import components.GodCardManager;
 
 public class SantoriniPlugin implements GamePlugin<String> {
     private static final String GAME_NAME = "Santorini";
@@ -85,21 +86,14 @@ public class SantoriniPlugin implements GamePlugin<String> {
     }
 
     private void setupGodCardSelection() {
-        int index = 0;
-        for (String key : game.getGodCards().getBuildStrategies().keySet()) {
-            if (index >= 25) break;
-            framework.setSquare(index % 5, index / 5, key + " - Build");
-            index++;
-        }
-        for (String key : game.getGodCards().getMoveStrategies().keySet()) {
-            if (index >= 25) break;
-            framework.setSquare(index % 5, index / 5, key + " - Move");
-            index++;
-        }
-        for (String key : game.getGodCards().getWinStrategies().keySet()) {
-            if (index >= 25) break;
-            framework.setSquare(index % 5, index / 5, key + " - Win");
-            index++;
+        // Use godCardManager to set up UI elements
+        for (int i = 0; i < Santorini.SIZE * Santorini.SIZE; i++) {
+            int x = i % Santorini.SIZE;
+            int y = i / Santorini.SIZE;
+            String cardName = game.godCardManager.getCardAtPosition(x, y, Santorini.SIZE);
+            if (cardName != null) {
+                framework.setSquare(x, y, cardName);
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import components.Player;
 import components.Tile;
 import components.TurnPhase;
 import components.GodCards;
+import components.GodCardManager;
 
 import plugin.SantoriniPlugin;
 
@@ -26,6 +27,7 @@ public final class Santorini {
     private boolean workersPlaced = false;
     private Worker selectedWorker;
     private GodCards godCards;
+    private GodCardManager godCardManager;
 
     /**
      * Constructor for Santorini game initializes the board and players.
@@ -39,6 +41,7 @@ public final class Santorini {
         currPlayer = players.get(0);
         this.gameWon = false;
         this.godCards = new GodCards();
+        this.godCardManager = new GodCardManager(Arrays.asList("Demeter", "Hephaestus", "Minotaur", "Pan"));
     }
 
     
@@ -270,8 +273,7 @@ public final class Santorini {
     // }
 
     public void handleGodChoice(int x, int y) {
-        String godCardName = this.getGodCardNameAtPosition(x, y); // Implement this method based on your UI storage.
-
+        String godCardName = godCardManager.getCardAtPosition(x, y, 5);
         if (godCardName != null && godCards.isValidSelection(godCardName)) {
             if (godCards.getBuildStrategy(godCardName) != null) {
                 currPlayer.setBuildStrategy(godCards.getBuildStrategy(godCardName));
