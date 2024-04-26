@@ -252,7 +252,7 @@ public final class Santorini {
             }
         }
         else {
-            buildStrategy.performBuild(worker, x, y, board);
+            buildStrategy.performBuild(worker, board, x, y);
             buildStrategy.setFirstBuild(false);
             selectedWorker = null;
             switchPlayer();
@@ -265,8 +265,8 @@ public final class Santorini {
             if (!player.hasBuildStrategy() && !player.hasMoveStrategy() && !player.hasWinStrategy()) {
                 return false;
             }
-            return true;
         }
+        return true;
     }
 
     // public boolean isValidGodCard(int x, int y) {

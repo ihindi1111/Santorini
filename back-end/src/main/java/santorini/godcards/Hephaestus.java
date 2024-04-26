@@ -11,14 +11,15 @@ public class Hephaestus implements IBuildStrategy {
 
     @Override
     public boolean performBuild(Worker worker, Board board, int x, int y) {
-        if (isValidBuild(worker, board, previousTile, x, y)) {  // Only add a block if it won't create a dome
+        if (isValidBuild(worker, board, x, y)) {  // Only add a block if it won't create a dome
             previousTile.build();  // Add another block
             return true;
         }
         return false;
     }
 
-    public boolean isValidBuild(Worker worker, Board board, Tile previousTile, int x, int y) {
+    @Override
+    public boolean isValidBuild(Worker worker, Board board, int x, int y) {
         if (board.getTile(x, y) == previousTile) {
             return true; // Skip the second build and end the building phase
         } //might need fixing

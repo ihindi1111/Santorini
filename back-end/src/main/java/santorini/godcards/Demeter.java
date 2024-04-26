@@ -12,7 +12,7 @@ public class Demeter implements IBuildStrategy {
 
     @Override
     public boolean performBuild(Worker worker, Board board, int x, int y) {
-        if (isValidBuild(worker, board, previousTile, x, y)) {
+        if (isValidBuild(worker, board, x, y)) {
             board.getTile(x, y).build();
             return true;
         }
