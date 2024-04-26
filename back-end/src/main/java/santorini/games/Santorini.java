@@ -50,7 +50,7 @@ public final class Santorini {
     /**
      * Switches the active player to the next one in the list.
      */
-    public void switchPlayer() {
+    private void switchPlayer() {
         int nextPlayerIndex = (players.indexOf(currPlayer) + 1) % players.size();
         this.currPlayer = players.get(nextPlayerIndex);
     }
@@ -60,7 +60,7 @@ public final class Santorini {
      * @param worker The worker to check for a win condition
      * @return True if the worker has reached the third level, false otherwise
      */
-    public boolean checkForWin(Worker worker) {
+    private boolean checkForWin(Worker worker) {
         return board.getTile(worker.getX(), worker.getY()).getLevel() == 3;
     }
 
@@ -87,7 +87,7 @@ public final class Santorini {
      * @param newY The y-coordinate of the new position
      * @return True if the move was successful, false otherwise
      */
-    public boolean moveWorker(Worker worker, int newX, int newY) {
+    private boolean moveWorker(Worker worker, int newX, int newY) {
         if (board.isValidMove(currPlayer, worker, newX, newY)) {
             board.getTile(worker.getX(), worker.getY()).setWorker(null);
             Tile moving = board.getTile(newX, newY);
@@ -105,7 +105,7 @@ public final class Santorini {
      * @param buildY The y-coordinate to build at
      * @return true if the build is valid, false otherwise
      */
-    public boolean build(Worker worker, int buildX, int buildY) {
+    private boolean build(Worker worker, int buildX, int buildY) {
         if (board.isValidBuild(currPlayer, worker, buildX, buildY)) {
             Tile tileToBuild = board.getTile(buildX, buildY);
             tileToBuild.build();
@@ -121,7 +121,7 @@ public final class Santorini {
     * @param x The x-coordinate for the worker placement
     * @param y The y-coordinate for the worker placement
     */
-    public boolean placeWorker(Worker worker, int x, int y) {
+    private boolean placeWorker(Worker worker, int x, int y) {
         Tile tile = board.getTile(x, y);
         if (tile != null && !tile.isOccupied()) {
             tile.setWorker(worker);
@@ -223,7 +223,7 @@ public final class Santorini {
         return true;
     }
 
-    public void handleGodMove(Worker worker, int x, int y) {
+    private void handleGodMove(Worker worker, int x, int y) {
         boolean placed = currPlayer.getMoveStrategy().performMove(worker, x, y, board);
         IMoveStrategy moveStrategy = currPlayer.getMoveStrategy();
         if (!moveStrategy.hasSecondMove()) {
@@ -249,7 +249,7 @@ public final class Santorini {
         else currentPhase = TurnPhase.BUILD;
     }
 
-    public void handleGodBuild(Worker worker, int x, int y) {
+    private void handleGodBuild(Worker worker, int x, int y) {
         IBuildStrategy buildStrategy = currPlayer.getBuildStrategy();
         if (!buildStrategy.firstBuild()) {
             if (selectedWorker != null && buildStrategy.performBuild(currPlayer, worker, board, x, y)) return;
@@ -361,7 +361,7 @@ public final class Santorini {
      * Returns whether workers have been placed on the board
      * @return True if workers have been placed, false otherwise
      */
-    public boolean getWorkersPlaced() {
+    private boolean getWorkersPlaced() {
         return workersPlaced;
     }
 
