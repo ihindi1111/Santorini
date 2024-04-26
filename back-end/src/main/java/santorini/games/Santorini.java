@@ -57,6 +57,7 @@ public final class Santorini {
         godCards.registerGodCard("Pan", new Pan());
         godCards.registerGodCard("Apollo", new Apollo());
         godCards.registerGodCard("Artemis", new Artemis());
+        godCards.registerGodCard("Atlas", new Atlas());
     }
 
     
