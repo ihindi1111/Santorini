@@ -11,6 +11,7 @@ components/GodCardManager.class
 interfaces/IWinStrategy.class
 components/TurnPhase.class
 components/App$Test.class
+godcards/Apollo.class
 plugin/SantoriniPlugin.class
 components/App.class
 games/Santorini.class

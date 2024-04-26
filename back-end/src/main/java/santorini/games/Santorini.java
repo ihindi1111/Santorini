@@ -43,7 +43,7 @@ public final class Santorini {
         currPlayer = players.get(0);
         this.gameWon = false;
         this.godCards = new GodCards();
-        this.godCardManager = new GodCardManager(Arrays.asList("Demeter", "Hephaestus", "Minotaur", "Pan"));
+        this.godCardManager = new GodCardManager(Arrays.asList("Demeter", "Hephaestus", "Minotaur", "Pan", "Apollo"));
     }
 
     

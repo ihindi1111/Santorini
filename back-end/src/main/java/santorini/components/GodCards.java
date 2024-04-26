@@ -9,6 +9,7 @@ import godcards.Demeter;
 import godcards.Hephaestus;
 import godcards.Minotaur;
 import godcards.Pan;
+import godcards.Apollo;
 
 import interfaces.IBuildStrategy;
 import interfaces.IWinStrategy;
