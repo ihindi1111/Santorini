@@ -49,7 +49,7 @@ public class Board {
         if (player.getGodStrategy().hasNum() == 2 && player.getGodStrategy().hasPerformedFirstAction()) {
             return player.getGodStrategy().isValidAction(player, worker, this, buildX, buildY);
         }
-        else if (player.getGodStrategy().hasNum() == 2) {
+        else if (player.getGodStrategy().hasNum() == 2 && !player.getGodStrategy().hasSecondAction()) {
             return player.getGodStrategy().isValidAction(player, worker, this, buildX, buildY);
         }
         if (worker == null) return false;
@@ -75,7 +75,7 @@ public class Board {
         if (player.getGodStrategy().hasNum() == 1 && player.getGodStrategy().hasPerformedFirstAction()) {
             return player.getGodStrategy().isValidAction(player, worker, this, newX, newY);
         }
-        else if (player.getGodStrategy().hasNum() == 1) {
+        else if (player.getGodStrategy().hasNum() == 1 && !player.getGodStrategy().hasSecondAction()) {
             return player.getGodStrategy().isValidAction(player, worker, this, newX, newY);
         }
         if (worker == null) return false;
