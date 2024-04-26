@@ -229,17 +229,20 @@ public final class Santorini {
         if (!moveStrategy.hasSecondMove()) {
             if (placed) {
                 currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+                checkForWin(worker);
                 currentPhase = TurnPhase.BUILD;
             }
         }
         else if (moveStrategy.hasSecondMove() && !moveStrategy.hasPerformedFirstMove()) {
             if (placed) {
                 currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+                checkForWin(worker);
             }
         }
         else if (currPlayer.getMoveStrategy().hasSecondMove() && moveStrategy.hasPerformedFirstMove()) {
             if (placed) {
                 currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+                checkForWin(worker);
                 currentPhase = TurnPhase.BUILD;
             }
         }
