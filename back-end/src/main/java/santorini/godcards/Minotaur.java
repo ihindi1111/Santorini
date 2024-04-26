@@ -10,52 +10,63 @@ public class Minotaur implements IMoveStrategy {
 
     @Override
     public boolean isValidMove(Worker worker, Tile fromTile, Tile toTile, Board board) {
+        // Ensure movement is to an adjacent, orthogonal tile
+        int dx = toTile.getX() - fromTile.getX();
+        int dy = toTile.getY() - fromTile.getY();
+        
+        // Check that the movement is exactly one step horizontally or vertically (not diagonal)
+        if (!((Math.abs(dx) == 1 && dy == 0) || (Math.abs(dy) == 1 && dx == 0))) {
+            return false; // Move is either diagonal, more than one space, or to the same tile
+        }
+    
         if (toTile.isOccupied() && !toTile.hasDome()) {
-            // Calculate the tile behind the opponent's worker to check if it is free
-            int deltaX = toTile.getX() - fromTile.getX();
-            int deltaY = toTile.getY() - fromTile.getY();
-            Tile behindTile = board.getTile(toTile.getX() + deltaX, toTile.getY() + deltaY);
-            return behindTile != null && !behindTile.isOccupied() && !behindTile.hasDome();
+            Worker opponent = toTile.getWorker();
+            if (opponent.getPlayer() != worker.getPlayer()) {
+                // Calculate the tile behind the opponent's worker to check if it is free
+                Tile behindTile = board.getTile(toTile.getX() + dx, toTile.getY() + dy);
+                // The tile must exist, be unoccupied, and not have a dome
+                return behindTile != null && !behindTile.isOccupied() && !behindTile.hasDome();
+            }
         }
         return !toTile.isOccupied() && !toTile.hasDome();
     }
 
     @Override
     public boolean performMove(Worker worker, int x, int y, Board board) {
-        // Get the target tile using x, y coordinates
         Tile toTile = board.getTile(x, y);
-
-        // Assume fromTile is the current worker's tile
         Tile fromTile = board.getTile(worker.getX(), worker.getY());
-
-        // Check if there is an opponent worker at the destination tile
+    
         if (toTile.isOccupied()) {
             Worker opponent = toTile.getWorker();
-            int deltaX = x - fromTile.getX();
-            int deltaY = y - fromTile.getY();
-
-            // Calculate the coordinates of the tile behind the opponent based on the move direction
-            Tile behindTile = board.getTile(toTile.getX() + deltaX, toTile.getY() + deltaY);
-
-            // Check if the behind tile is valid and not blocked
-            if (behindTile != null && !behindTile.isOccupied() && !behindTile.hasDome()) {
-                // Push the opponent's worker to the behindTile
-                behindTile.setWorker(opponent);
-                opponent.setPosition(behindTile.getX(), behindTile.getY());
-
-                // Move the current worker to the toTile
-                toTile.setWorker(worker);
-                worker.setPosition(x, y);
-                return true;
-            } else {
+            if (opponent.getPlayer() != worker.getPlayer()) {
+                int deltaX = x - fromTile.getX();
+                int deltaY = y - fromTile.getY();
+                Tile behindTile = board.getTile(toTile.getX() + deltaX, toTile.getY() + deltaY);
+    
+                if (behindTile != null && !behindTile.isOccupied() && !behindTile.hasDome()) {
+                    // Push the opponent's worker to the behindTile
+                    behindTile.setWorker(opponent);
+                    opponent.setPosition(behindTile.getX(), behindTile.getY());
+                    toTile.setWorker(null); // Clear the opponent from the current tile
+    
+                    // Move the Minotaur's worker to the toTile
+                    toTile.setWorker(worker);
+                    worker.setPosition(x, y);
+                    fromTile.setWorker(null);
+                    return true;
+                }
                 return false;
             }
-        } else {
-            // If no opponent is there, just move the worker normally
+        }
+    
+        // If no opponent is there, just move the worker normally
+        if (!toTile.isOccupied() && isValidMove(worker, fromTile, toTile, board)) {
             toTile.setWorker(worker);
             worker.setPosition(x, y);
+            fromTile.setWorker(null);
             return true;
         }
+        return false;
     }
 
     @Override
