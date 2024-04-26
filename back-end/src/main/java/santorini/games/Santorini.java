@@ -320,11 +320,12 @@ public final class Santorini {
                 }
                 break;
             case MOVE:
+            Tile startTile = board.getTile(selectedWorker.getX(), selectedWorker.getY());
                 if (currPlayer.hasMoveStrategy()) handleGodMove(selectedWorker, x, y);
                 else if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
                     System.out.println("Reached");
                     if (currPlayer.hasWinStrategy()) {
-                        currPlayer.getWinStrategy().checkForWin(selectedWorker, board, x, y);
+                        currPlayer.getWinStrategy().checkForWin(startTile, board.getTile(x, y));
                     }
                     if (checkForWin(selectedWorker)) {
                         gameWon = true;
