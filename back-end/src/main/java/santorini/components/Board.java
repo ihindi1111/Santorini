@@ -44,7 +44,9 @@ public class Board {
     * @return true if the build is valid, false otherwise
     */
     public boolean isValidBuild(Player player, Worker worker, int buildX, int buildY) {
-        if (player.hasBuildStrategy() && player.getBuildStrategy().firstBuild()) return player.getBuildStrategy().isValidBuild(player, worker, this, buildX, buildY);
+        if (player.getGodStrategy().hasBuild() && player.getGodStrategy().hasPerformedFirstAction()) {
+            return player.getGodStrategy().isValidAction(player, worker, this, buildX, buildY);
+        }
         if (worker == null) return false;
         if (getTile(buildX, buildY) == null) return false; // Out of bounds
         if (buildX < 0 || buildX >= BOARD_SIZE || buildY < 0 || buildY >= BOARD_SIZE) return false; // Out of bounds
@@ -65,8 +67,9 @@ public class Board {
     * @return true if the move is valid, false otherwise
     */
     public boolean isValidMove(Player player, Worker worker, int newX, int newY) {
-        // Check if move is within bounds and to an adjacent, unoccupied tile that does not exceed climb limit
-        if (player.hasMoveStrategy()) return player.getMoveStrategy().isValidMove(worker, getTile(worker.getX(), worker.getY()), getTile(newX, newY), this);
+        if (player.getGodStrategy().hasMove() && player.getGodStrategy().hasPerformedFirstAction()) {
+            return player.getGodStrategy().isValidAction(player, worker, this, newX, newY);
+        }
         if (worker == null) return false;
         if (getTile(newX, newY) == null) return false; // Out of bounds
         if (newX < 0 || newX >= BOARD_SIZE || newY < 0 || newY >= BOARD_SIZE) return false; // Out of bounds

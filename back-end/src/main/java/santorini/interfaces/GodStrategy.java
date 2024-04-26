@@ -10,4 +10,7 @@ public interface GodStrategy {
     boolean performAction(Player player, Worker worker, Board board, int x, int y);
     boolean hasPerformedFirstAction();
     boolean hasSecondAction();
+    boolean hasMove();
+    boolean hasBuild();
+    boolean hasWin();
 }

@@ -9,7 +9,7 @@ import components.Tile;
 import components.TurnPhase;
 import components.Worker;
 import components.TurnPhase;
-import components.GodCardManager;
+import components.GodCards;
 
 public class SantoriniPlugin implements GamePlugin<String> {
     private static final String GAME_NAME = "Santorini";
@@ -90,7 +90,8 @@ public class SantoriniPlugin implements GamePlugin<String> {
         for (int i = 0; i < Santorini.SIZE * Santorini.SIZE; i++) {
             int x = i % Santorini.SIZE;
             int y = i / Santorini.SIZE;
-            String cardName = game.getGodCardManager().getCardAtPosition(x, y, Santorini.SIZE);
+            int index = y * Santorini.SIZE + x;
+            String cardName = game.getGodCards().getCardAtPosition(index);
             if (cardName != null) {
                 framework.setSquare(x, y, cardName);
             }
@@ -168,7 +169,8 @@ public class SantoriniPlugin implements GamePlugin<String> {
         switch (game.getPhase()) {
             case SELECT_GOD_CARD:
                 // Check if the chosen square corresponds to a selectable god card
-                String godCardName = game.getGodCardManager().getCardAtPosition(x, y, WIDTH);
+                int index = y * WIDTH + x;
+                String godCardName = game.getGodCards().getCardAtPosition(index);
                 return godCardName != null && game.getGodCards().isValidSelection(godCardName);
             case PLACE_WORKERS:
                 // During placement, any unoccupied square is a valid move

@@ -6,17 +6,24 @@ import components.Player;
 import components.Tile;
 import components.TurnPhase;
 import components.GodCards;
-import components.GodCardManager;
 
 import plugin.SantoriniPlugin;
 
 import interfaces.IMoveStrategy;
 import interfaces.IBuildStrategy;
 import interfaces.IWinStrategy;
+import interfaces.GodStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+
+import godcards.Demeter;
+import godcards.Hephaestus;
+import godcards.Minotaur;
+import godcards.Pan;
+import godcards.Apollo;
+
 
 public final class Santorini {
     private Board board;
@@ -28,7 +35,6 @@ public final class Santorini {
     private boolean workersPlaced = false;
     private Worker selectedWorker;
     private GodCards godCards;
-    private GodCardManager godCardManager;
     private Tile startTile;
 
     /**
@@ -43,7 +49,16 @@ public final class Santorini {
         currPlayer = players.get(0);
         this.gameWon = false;
         this.godCards = new GodCards();
-        this.godCardManager = new GodCardManager(Arrays.asList("Demeter", "Hephaestus", "Minotaur", "Pan", "Apollo", "Artemis"));
+
+        initializeGodCards();
+    }
+
+    private void initializeGodCards() {
+        godCards.registerGodCard("Demeter", new Demeter());
+        godCards.registerGodCard("Hephaestus", new Hephaestus());
+        godCards.registerGodCard("Minotaur", new Minotaur());
+        godCards.registerGodCard("Pan", new Pan());
+        godCards.registerGodCard("Apollo", new Apollo());
     }
 
     
@@ -223,25 +238,29 @@ public final class Santorini {
         return true;
     }
 
-    private void handleGodMove(Worker worker, int x, int y) {
-        boolean placed = currPlayer.getMoveStrategy().performMove(worker, x, y, board);
-        IMoveStrategy moveStrategy = currPlayer.getMoveStrategy();
-        if (!moveStrategy.hasSecondMove()) {
-            if (placed) {
-                currPlayer.getMoveStrategy().performMove(worker, x, y, board);
-                checkForWin(worker);
-                currentPhase = TurnPhase.BUILD;
+    private void handleGodAction(Worker worker, int x, int y) {
+        GodStrategy godStrategy = currPlayer.getGodStrategy();
+        boolean performed = godStrategy.performAction(currPlayer, worker, board, x, y);
+        if (!godStrategy.hasSecondAction()) {
+            if (performed) {
+                godStrategy.performAction(currPlayer, worker, board, x, y);
+                if (godStrategy.hasMove()) {
+                    checkForWin(worker);
+                    currentPhase = TurnPhase.BUILD;
+                }
             }
         }
-        else if (moveStrategy.hasSecondMove() && !moveStrategy.hasPerformedFirstMove()) {
-            if (placed) {
-                currPlayer.getMoveStrategy().performMove(worker, x, y, board);
-                checkForWin(worker);
+        else if (godStrategy.hasSecondAction() && !godStrategy.hasPerformedFirstAction()) {
+            if (performed) {
+                if (godStrategy.hasMove()) {
+                    godStrategy.performAction(currPlayer, worker, board, x, y);
+                    checkForWin(worker);
+                }
             }
         }
-        else if (currPlayer.getMoveStrategy().hasSecondMove() && moveStrategy.hasPerformedFirstMove()) {
-            if (placed) {
-                currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+        else if (godStrategy.hasSecondAction() && godStrategy.hasPerformedFirstAction()) {
+            if (performed) {
+                godStrategy.performAction(currPlayer, worker, board, x, y);
                 checkForWin(worker);
                 currentPhase = TurnPhase.BUILD;
             }
@@ -249,52 +268,30 @@ public final class Santorini {
         else currentPhase = TurnPhase.BUILD;
     }
 
-    private void handleGodBuild(Worker worker, int x, int y) {
-        IBuildStrategy buildStrategy = currPlayer.getBuildStrategy();
-        if (!buildStrategy.firstBuild()) {
-            if (selectedWorker != null && buildStrategy.performBuild(currPlayer, worker, board, x, y)) return;
-        }
-        else {
-            boolean built = currPlayer.getBuildStrategy().performBuild(currPlayer, worker, board, x, y);
-            if (built) {
-                switchPlayer();
-                currentPhase = TurnPhase.SELECT_WORKER;
-            }
-        }
-    }
-
     private boolean godCardsSelected() {
         for (Player player : players) {
-            if (!player.hasBuildStrategy() && !player.hasMoveStrategy() && !player.hasWinStrategy()) {
+            if (!player.hasGodStrategy()) {
                 return false;
             }
         }
         return true;
     }
 
-    // public boolean isValidGodCard(int x, int y) {
-    //     String godCardName = board.getTile(x, y).getContent(); // Assuming tiles can store content like God Card names during selection phase
-    //     return godCards.getBuildStrategy(godCardName) != null || 
-    //            godCards.getMoveStrategy(godCardName) != null ||
-    //            godCards.getWinStrategy(godCardName) != null;
-    // }
-
     public void handleGodChoice(int x, int y) {
-        String godCardName = godCardManager.getCardAtPosition(x, y, 5);
+        // Convert coordinates to a linear index assuming a row-major order
+        int index = y * SIZE + x;
+        String godCardName = godCards.getCardAtPosition(index);
         if (godCardName != null && godCards.isValidSelection(godCardName)) {
-            if (godCards.getBuildStrategy(godCardName) != null) {
-                currPlayer.setBuildStrategy(godCards.getBuildStrategy(godCardName));
-            } else if (godCards.getMoveStrategy(godCardName) != null) {
-                currPlayer.setMoveStrategy(godCards.getMoveStrategy(godCardName));
-            } else if (godCards.getWinStrategy(godCardName) != null) {
-                currPlayer.setWinStrategy(godCards.getWinStrategy(godCardName));
+            GodStrategy strategy = godCards.getStrategy(godCardName);
+            if (strategy != null) {
+                currPlayer.setGodStrategy(strategy);
+                switchPlayer();
             }
-            switchPlayer();
+            if (godCardsSelected()) {  // This checks if all players have selected a god card
+                currentPhase = TurnPhase.PLACE_WORKERS;
+            }
         }
-        if (godCardsSelected()) {
-            currentPhase = TurnPhase.PLACE_WORKERS;
-        }
-}
+    }
 
     /**
      * Plays the game based on the current phase and the coordinates of the move
@@ -305,6 +302,7 @@ public final class Santorini {
         if (gameWon) {
             return; // Stop processing if the game is already won.
         }
+        GodStrategy godStrategy = currPlayer.getGodStrategy();
         switch (currentPhase) {
             case SELECT_GOD_CARD:
                 handleGodChoice(x, y);
@@ -320,17 +318,14 @@ public final class Santorini {
                 }
                 break;
             case MOVE:
-                if (currPlayer.hasMoveStrategy()) handleGodMove(selectedWorker, x, y);
+                if (godStrategy.hasMove()) handleGodAction(selectedWorker, x, y);
                 else if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
-                    if (currPlayer.hasWinStrategy() && currPlayer.getWinStrategy().checkForWin(startTile, board.getTile(x, y))) {
+                    if (godStrategy.hasWin()) {
+                        godStrategy.performAction(currPlayer, selectedWorker, board, x, y);
                         gameWon = true;
                         return;
                     }
-                    if (checkForWin(selectedWorker)) {
-                        gameWon = true;
-                        return;
-                    }
-                    currentPhase = TurnPhase.BUILD;
+                    else currentPhase = TurnPhase.BUILD;
                 }
                 else {
                     selectedWorker = null;  // Move was not successful, reset the selected worker
@@ -338,7 +333,7 @@ public final class Santorini {
                 }
                 break;
             case BUILD:
-                if (currPlayer.hasBuildStrategy()) handleGodBuild(selectedWorker, x, y);
+                if (godStrategy.hasBuild()) handleGodAction(selectedWorker, x, y);
                 else if (selectedWorker != null && build(selectedWorker, x, y)) {
                     selectedWorker = null;
                     currentPhase = TurnPhase.SELECT_WORKER;
@@ -368,8 +363,43 @@ public final class Santorini {
     public GodCards getGodCards() {
         return godCards;
     }
-
-    public GodCardManager getGodCardManager() {
-        return godCardManager;
-    }
 }
+// private void handleGodMove(Worker worker, int x, int y) {
+    //     boolean placed = currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+    //     IMoveStrategy moveStrategy = currPlayer.getMoveStrategy();
+    //     if (!moveStrategy.hasSecondMove()) {
+    //         if (placed) {
+    //             currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+    //             checkForWin(worker);
+    //             currentPhase = TurnPhase.BUILD;
+    //         }
+    //     }
+    //     else if (moveStrategy.hasSecondMove() && !moveStrategy.hasPerformedFirstMove()) {
+    //         if (placed) {
+    //             currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+    //             checkForWin(worker);
+    //         }
+    //     }
+    //     else if (currPlayer.getMoveStrategy().hasSecondMove() && moveStrategy.hasPerformedFirstMove()) {
+    //         if (placed) {
+    //             currPlayer.getMoveStrategy().performMove(worker, x, y, board);
+    //             checkForWin(worker);
+    //             currentPhase = TurnPhase.BUILD;
+    //         }
+    //     }
+    //     else currentPhase = TurnPhase.BUILD;
+    // }
+
+    // private void handleGodBuild(Worker worker, int x, int y) {
+    //     IBuildStrategy buildStrategy = currPlayer.getBuildStrategy();
+    //     if (!buildStrategy.firstBuild()) {
+    //         if (selectedWorker != null && buildStrategy.performBuild(currPlayer, worker, board, x, y)) return;
+    //     }
+    //     else {
+    //         boolean built = currPlayer.getBuildStrategy().performBuild(currPlayer, worker, board, x, y);
+    //         if (built) {
+    //             switchPlayer();
+    //             currentPhase = TurnPhase.SELECT_WORKER;
+    //         }
+    //     }
+    // }

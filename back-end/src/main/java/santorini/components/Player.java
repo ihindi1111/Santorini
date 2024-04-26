@@ -5,17 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import interfaces.IBuildStrategy;
-import interfaces.IMoveStrategy;
-import interfaces.IWinStrategy;
+import interfaces.GodStrategy;
 
 public class Player {
     private int playerID;
     private Worker[] workers;
     private String playerName;
-    private IBuildStrategy buildStrategy;
-    private IMoveStrategy moveStrategy;
-    private IWinStrategy winStrategy;
+    private GodStrategy godStrategy = null;
 
     /**
     * Constructor that initializes a player with a reference to the game board
@@ -52,41 +48,16 @@ public class Player {
         return this.playerName;
     }
 
-    public boolean hasMoveStrategy() {
-        return moveStrategy != null;
+    public void setGodStrategy(GodStrategy godStrategy) {
+        this.godStrategy = godStrategy;
     }
 
-    public boolean hasBuildStrategy() {
-        return buildStrategy != null;
+    public GodStrategy getGodStrategy() {
+        return this.godStrategy;
     }
 
-    // Getter and setter for strategies
-    public IBuildStrategy getBuildStrategy() {
-        return buildStrategy;
-    }
-
-    public void setBuildStrategy(IBuildStrategy strategy) {
-        this.buildStrategy = strategy;
-    }
-
-    public IMoveStrategy getMoveStrategy() {
-        return moveStrategy;
-    }
-
-    public void setMoveStrategy(IMoveStrategy strategy) {
-        this.moveStrategy = strategy;
-    }
-
-    public IWinStrategy getWinStrategy() {
-        return winStrategy;
-    }
-
-    public void setWinStrategy(IWinStrategy strategy) {
-        this.winStrategy = strategy;
-    }
-
-    public boolean hasWinStrategy() {
-        return winStrategy != null;
+    public boolean hasGodStrategy() {
+        return this.godStrategy != null;
     }
 
 }
