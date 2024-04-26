@@ -14,13 +14,13 @@ public class Artemis implements GodStrategy {
     @Override
     public boolean isValidAction(Player player, Worker worker, Board board, int x, int y) {
         Tile targetTile = board.getTile(x, y);
-        // Check basic movement rules: adjacent and not the same tile
+        // Ensure movement is only horizontal or vertical and exactly one tile away
         int dx = Math.abs(worker.getX() - x);
         int dy = Math.abs(worker.getY() - y);
-        if ((dx == 1 && dy <= 1 || dy == 1 && dx <= 1) && (dx + dy != 0)) {
-            // Additional check for Artemis: cannot move back to initial tile on second move
-            if (firstMoveDone && initialTile == targetTile) {
-                return false;
+        if ((dx == 1 && dy == 0) || (dy == 1 && dx == 0)) {
+            // Check if trying to pass by moving to the same initial tile on second move
+            if (firstMoveDone && x == worker.getX() && y == worker.getY()) {
+                return true; // Allow "passing" by clicking on the same tile
             }
             return !targetTile.isOccupied() && !targetTile.hasDome();
         }
@@ -32,16 +32,16 @@ public class Artemis implements GodStrategy {
         if (isValidAction(player, worker, board, x, y)) {
             Tile fromTile = board.getTile(worker.getX(), worker.getY());
             Tile toTile = board.getTile(x, y);
-            // Move worker to new tile
+            // Move worker to new tile or stay on the same tile to "pass"
             fromTile.setWorker(null);
             toTile.setWorker(worker);
             worker.setPosition(x, y);
 
             if (!firstMoveDone) {
                 firstMoveDone = true;
-                initialTile = fromTile;
+                initialTile = fromTile; // Save initial tile to prevent returning on second move
             } else {
-                firstMoveDone = false; // Reset after second move
+                firstMoveDone = false; // Reset after the optional second move
                 initialTile = null;
             }
             return true;
