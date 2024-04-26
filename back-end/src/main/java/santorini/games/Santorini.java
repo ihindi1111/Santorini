@@ -154,8 +154,11 @@ public final class Santorini {
      * @return The worker at the specified coordinates, or null if no worker is present
      */
     public Worker selectWorker(int x, int y) {
-        if (board.getTile(x, y).getWorker() == null) return null;
-        return board.getTile(x, y).getWorker();
+        Tile tile = board.getTile(x, y);
+        if (tile != null && tile.getWorker() != null && tile.getWorker().getPlayer() == currPlayer.getPlayerID()) {
+            return tile.getWorker();
+        }
+        return null;
     }
 
     /**

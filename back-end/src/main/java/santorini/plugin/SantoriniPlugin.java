@@ -107,14 +107,14 @@ public class SantoriniPlugin implements GamePlugin<String> {
             GAME_START_FOOTER = String.format(PLAYER_WON_MSG, game.getCurrentPlayer().toString());
         }
         switch (game.getPhase()) {
+            case SELECT_GOD_CARD:
+                GAME_START_FOOTER = String.format("%s, select a God card", game.getCurrentPlayer().toString());
+                break;
             case PLACE_WORKERS:
                 GAME_START_FOOTER = "Place your workers on the board.";
                 break;
             case SELECT_WORKER:
                 GAME_START_FOOTER = String.format("%s, select a worker to move.", game.getCurrentPlayer().toString());
-                break;
-            case SELECT_GOD_CARD:
-                GAME_START_FOOTER = String.format("%s, select a God card", game.getCurrentPlayer().toString());
                 break;
             case MOVE:
                 GAME_START_FOOTER = "Move your selected worker to an adjacent square.";
