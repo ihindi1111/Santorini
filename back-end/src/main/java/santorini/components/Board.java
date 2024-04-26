@@ -49,6 +49,9 @@ public class Board {
         if (player.getGodStrategy().hasNum() == 2 && player.getGodStrategy().hasPerformedFirstAction()) {
             return player.getGodStrategy().isValidAction(player, worker, this, buildX, buildY);
         }
+        else if (player.getGodStrategy().hasNum() == 2) {
+            return player.getGodStrategy().isValidAction(player, worker, this, buildX, buildY);
+        }
         if (worker == null) return false;
         if (getTile(buildX, buildY) == null) return false; // Out of bounds
         if (buildX < 0 || buildX >= BOARD_SIZE || buildY < 0 || buildY >= BOARD_SIZE) return false; // Out of bounds
@@ -70,6 +73,9 @@ public class Board {
     */
     public boolean isValidMove(Player player, Worker worker, int newX, int newY) {
         if (player.getGodStrategy().hasNum() == 1 && player.getGodStrategy().hasPerformedFirstAction()) {
+            return player.getGodStrategy().isValidAction(player, worker, this, newX, newY);
+        }
+        else if (player.getGodStrategy().hasNum() == 1) {
             return player.getGodStrategy().isValidAction(player, worker, this, newX, newY);
         }
         if (worker == null) return false;

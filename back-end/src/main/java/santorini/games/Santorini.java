@@ -330,7 +330,16 @@ public final class Santorini {
             case MOVE:
                 int x1 = selectedWorker.getX();
                 int y1 = selectedWorker.getY();
-                if (godStrategy.hasNum() == 1) handleGodAction(selectedWorker, x, y);
+                if (godStrategy.hasNum() == 1 && godStrategy.hasSecondAction()) handleGodAction(selectedWorker, x, y);
+                else if (godStrategy.hasNum() == 1) {
+                    if (godStrategy.performAction(currPlayer, selectedWorker, board, x, y)) {
+                        if (checkForWin(selectedWorker)) {
+                            gameWon = true;
+                            return;
+                        }
+                        currentPhase = TurnPhase.BUILD;
+                    }
+                }
                 else if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
                     if (godStrategy.hasNum() == 0) {
                         if (godStrategy.performAction(currPlayer, selectedWorker, board, x1, y1)) {

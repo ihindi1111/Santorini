@@ -61,6 +61,6 @@ public class Artemis implements GodStrategy {
 
     @Override
     public int hasNum() {
-        return 1; // Artemis uses a two-move sequence
+        return 1; // Artemis has a move action
     }
 }
