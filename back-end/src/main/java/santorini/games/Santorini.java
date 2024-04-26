@@ -5,7 +5,9 @@ import components.Worker;
 import components.Player;
 import components.Tile;
 import components.TurnPhase;
-import componenets.GodCards;
+import components.GodCards;
+
+import plugin.SantoriniPlugin;
 
 import interfaces.IMoveStrategy;
 import interfaces.IBuildStrategy;
@@ -268,22 +270,23 @@ public final class Santorini {
     }
 
     public void handleGodChoice(int x, int y) {
-        boolean placed = isValidGodCard(x, y);
-        if (!placed) return;
-        else {
-            String godCardName = board.getTile(x, y).getContent();
-            // Assign corresponding strategy based on the chosen God Card
-            if (godCards.getBuildStrategy(godCardName) != null) {
-                currPlayer.setBuildStrategy(godCards.getBuildStrategy(godCardName));
-            } else if (godCards.getMoveStrategy(godCardName) != null) {
-                currPlayer.setMoveStrategy(godCards.getMoveStrategy(godCardName));
-            } else if (godCards.getWinStrategy(godCardName) != null) {
-                currPlayer.setWinStrategy(godCards.getWinStrategy(godCardName));
-            }
-            switchPlayer();
+    String godCardName = this.getGodCardNameAtPosition(x, y); // Implement this method based on your UI storage.
+
+    if (godCardName != null && godCards.isValidSelection(godCardName)) {
+        if (godCards.getBuildStrategy(godCardName) != null) {
+            currPlayer.setBuildStrategy(godCards.getBuildStrategy(godCardName));
+        } else if (godCards.getMoveStrategy(godCardName) != null) {
+            currPlayer.setMoveStrategy(godCards.getMoveStrategy(godCardName));
+        } else if (godCards.getWinStrategy(godCardName) != null) {
+            currPlayer.setWinStrategy(godCards.getWinStrategy(godCardName));
         }
-        if (godCardsSelected()) currentPhase = TurnPhase.PLACE_WORKERS;
+
+        switchPlayer();
     }
+    if (godCardsSelected()) {
+        currentPhase = TurnPhase.PLACE_WORKERS;
+    }
+}
 
     /**
      * Plays the game based on the current phase and the coordinates of the move
@@ -350,5 +353,9 @@ public final class Santorini {
      */
     public boolean getWorkersPlaced() {
         return workersPlaced;
+    }
+
+    public GodCards getGodCards() {
+        return godCards;
     }
 }

@@ -8,6 +8,7 @@ import components.Player;
 import components.Tile;
 import components.TurnPhase;
 import components.Worker;
+import components.TurnPhase;
 
 public class SantoriniPlugin implements GamePlugin<String> {
     private static final String GAME_NAME = "Santorini";
@@ -20,6 +21,7 @@ public class SantoriniPlugin implements GamePlugin<String> {
     private String GAME_START_FOOTER = "You are playing Santorini!";
     private GameFramework framework;
     private Santorini game;
+    private String[] godCardGrid = new String[WIDTH * HEIGHT];
 
     @Override
     public String getGameName() {
@@ -70,6 +72,7 @@ public class SantoriniPlugin implements GamePlugin<String> {
     public void onMovePlayed(int x, int y) {
         if (game.getPhase().equals(TurnPhase.SELECT_GOD_CARD)) {
             game.handleGodChoice(x, y);
+        }
         else {
             game.play(x, y);
             updateBoardVisuals();
@@ -98,6 +101,11 @@ public class SantoriniPlugin implements GamePlugin<String> {
             framework.setSquare(index % 5, index / 5, key + " - Win");
             index++;
         }
+    }
+
+    public String getGodCardNameAtPosition(int x, int y) {
+        int index = y * WIDTH + x;
+        return index >= 0 && index < godCardGrid.length ? godCardGrid[index] : null;
     }
 
     private void updateFooterText() {
