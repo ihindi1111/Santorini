@@ -9,8 +9,8 @@ public class Hephaestus implements IBuildStrategy {
     private boolean firstBuild = false;
 
     @Override
-    public boolean performBuild(Worker worker, Tile previousTile, int x, int y) {
-        if (isValidBuild(worker, previousTile, x, y)) {  // Only add a block if it won't create a dome
+    public boolean performBuild(Worker worker, Board board, Tile previousTile, int x, int y) {
+        if (isValidBuild(worker, board, previousTile, x, y)) {  // Only add a block if it won't create a dome
             previousTile.build();  // Add another block
             return true;
         }

@@ -239,7 +239,7 @@ public final class Santorini {
     }
 
     public void handleGodBuild(Worker worker, int x, int y) {
-        boolean built = currPlayer.getBuildStrategy().performBuild(worker, x, y, board);
+        boolean built = currPlayer.getBuildStrategy().performBuild(worker, board, x, y);
         IBuildStrategy buildStrategy = currPlayer.getBuildStrategy();
         if (!buildStrategy.firstBuild()) {
             if (selectedWorker != null && build(selectedWorker, x, y)) buildStrategy.setFirstBuild(true);
@@ -262,30 +262,30 @@ public final class Santorini {
         }
     }
 
-    public boolean isValidGodCard(int x, int y) {
-        String godCardName = board.getTile(x, y).getContent(); // Assuming tiles can store content like God Card names during selection phase
-        return godCards.getBuildStrategy(godCardName) != null || 
-               godCards.getMoveStrategy(godCardName) != null ||
-               godCards.getWinStrategy(godCardName) != null;
-    }
+    // public boolean isValidGodCard(int x, int y) {
+    //     String godCardName = board.getTile(x, y).getContent(); // Assuming tiles can store content like God Card names during selection phase
+    //     return godCards.getBuildStrategy(godCardName) != null || 
+    //            godCards.getMoveStrategy(godCardName) != null ||
+    //            godCards.getWinStrategy(godCardName) != null;
+    // }
 
     public void handleGodChoice(int x, int y) {
-    String godCardName = this.getGodCardNameAtPosition(x, y); // Implement this method based on your UI storage.
+        String godCardName = this.getGodCardNameAtPosition(x, y); // Implement this method based on your UI storage.
 
-    if (godCardName != null && godCards.isValidSelection(godCardName)) {
-        if (godCards.getBuildStrategy(godCardName) != null) {
-            currPlayer.setBuildStrategy(godCards.getBuildStrategy(godCardName));
-        } else if (godCards.getMoveStrategy(godCardName) != null) {
-            currPlayer.setMoveStrategy(godCards.getMoveStrategy(godCardName));
-        } else if (godCards.getWinStrategy(godCardName) != null) {
-            currPlayer.setWinStrategy(godCards.getWinStrategy(godCardName));
+        if (godCardName != null && godCards.isValidSelection(godCardName)) {
+            if (godCards.getBuildStrategy(godCardName) != null) {
+                currPlayer.setBuildStrategy(godCards.getBuildStrategy(godCardName));
+            } else if (godCards.getMoveStrategy(godCardName) != null) {
+                currPlayer.setMoveStrategy(godCards.getMoveStrategy(godCardName));
+            } else if (godCards.getWinStrategy(godCardName) != null) {
+                currPlayer.setWinStrategy(godCards.getWinStrategy(godCardName));
+            }
+
+            switchPlayer();
         }
-
-        switchPlayer();
-    }
-    if (godCardsSelected()) {
-        currentPhase = TurnPhase.PLACE_WORKERS;
-    }
+        if (godCardsSelected()) {
+            currentPhase = TurnPhase.PLACE_WORKERS;
+        }
 }
 
     /**
@@ -314,7 +314,7 @@ public final class Santorini {
                 if (currPlayer.hasMoveStrategy()) handleGodMove(selectedWorker, x, y);
                 else if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
                     if (currPlayer.hasWinStrategy()) {
-                        currPlayer.getWinStrategy().checkForWin(selectedWorker, x, y, board);
+                        currPlayer.getWinStrategy().checkForWin(selectedWorker, board, x, y);
                     }
                     if (checkForWin(selectedWorker)) {
                         gameWon = true;

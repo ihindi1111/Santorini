@@ -6,7 +6,7 @@ import components.Worker;
 
 public interface IMoveStrategy {
     boolean isValidMove(Worker worker, Tile fromTile, Tile toTile, Board board);
-    void performMove(Worker worker, int x, int y, Board board);
+    boolean performMove(Worker worker, int x, int y, Board board);
     boolean hasPerformedFirstMove();
     boolean hasSecondMove();
 }

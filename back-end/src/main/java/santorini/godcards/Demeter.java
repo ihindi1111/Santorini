@@ -10,9 +10,9 @@ public class Demeter implements IBuildStrategy {
     private boolean firstBuild = false;
 
     @Override
-    public boolean performBuild(Board board, Tile previousTile, int x, int y) {
-        if (isValidBuild(board, previousTile, x, y)) {
-            buildTile.build();
+    public boolean performBuild(Worker worker, Board board, Tile previousTile, int x, int y) {
+        if (isValidBuild(worker, board, previousTile, x, y)) {
+            board.getTile(x, y).build();
             return true;
         }
         return false;

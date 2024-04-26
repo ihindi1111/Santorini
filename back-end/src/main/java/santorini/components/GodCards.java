@@ -2,6 +2,8 @@ package components;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import godcards.Demeter;
 import godcards.Hephaestus;
@@ -48,15 +50,15 @@ public class GodCards {
         return winStrategies.get(name);
     }
 
-    public List<String> getBuildStrategies() {
-        return new ArrayList<>(buildStrategies.keySet());
+    public Map<String, IBuildStrategy> getBuildStrategies() {
+        return buildStrategies;
     }
 
-    public List<String> getMoveStrategies() {
-        return new ArrayList<>(moveStrategies.keySet());
+    public Map<String, IMoveStrategy> getMoveStrategies() {
+        return moveStrategies;
     }
 
-    public List<String> getWinStrategies() {
-        return new ArrayList<>(winStrategies.keySet());
+    public Map<String, IWinStrategy> getWinStrategies() {
+        return winStrategies;
     }
 }

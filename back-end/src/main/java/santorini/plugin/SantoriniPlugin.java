@@ -119,7 +119,7 @@ public class SantoriniPlugin implements GamePlugin<String> {
             case SELECT_WORKER:
                 GAME_START_FOOTER = String.format("%s, select a worker to move.", game.getCurrentPlayer().toString());
                 break;
-            case SELECT_GOD_WORKER:
+            case SELECT_GOD_CARD:
                 GAME_START_FOOTER = String.format("%s, select a God card", game.getCurrentPlayer().toString());
                 break;
             case MOVE:
@@ -186,11 +186,11 @@ public class SantoriniPlugin implements GamePlugin<String> {
             case MOVE:
                 // Validate the move only if a worker has been selected
                 Worker selectedWorker = game.getSelectedWorker();
-                return selectedWorker != null && game.getBoard().isValidMove(selectedWorker, x, y);
+                return selectedWorker != null && game.getBoard().isValidMove(game.getCurrentPlayer(), selectedWorker, x, y);
             case BUILD:
                 // Validate the build only if a worker has been selected
                 selectedWorker = game.getSelectedWorker();
-                return selectedWorker != null && game.getBoard().isValidBuild(selectedWorker, x, y);
+                return selectedWorker != null && game.getBoard().isValidBuild(game.getCurrentPlayer(), selectedWorker, x, y);
             default:
                 // If it's not one of the above phases, no moves should be valid
                 return false;

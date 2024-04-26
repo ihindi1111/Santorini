@@ -85,4 +85,8 @@ public class Player {
         this.winStrategy = strategy;
     }
 
+    public boolean hasWinStrategy() {
+        return winStrategy != null;
+    }
+
 }

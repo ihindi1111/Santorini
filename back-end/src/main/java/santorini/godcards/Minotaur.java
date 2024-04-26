@@ -21,7 +21,7 @@ public class Minotaur implements IMoveStrategy {
     }
 
     @Override
-    public void performMove(Worker worker, int x, int y, Board board) {
+    public boolean performMove(Worker worker, int x, int y, Board board) {
         // Get the target tile using x, y coordinates
         Tile toTile = board.getTile(x, y);
 
@@ -46,14 +46,15 @@ public class Minotaur implements IMoveStrategy {
                 // Move the current worker to the toTile
                 toTile.setWorker(worker);
                 worker.setPosition(x, y);
+                return true;
             } else {
-                // If the move is not valid (e.g., behindTile is blocked), handle accordingly
-                throw new IllegalArgumentException("Invalid move: no space to push the opponent's worker.");
+                return false;
             }
         } else {
             // If no opponent is there, just move the worker normally
             toTile.setWorker(worker);
             worker.setPosition(x, y);
+            return true;
         }
     }
 
