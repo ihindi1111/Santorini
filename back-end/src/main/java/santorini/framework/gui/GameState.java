@@ -15,6 +15,7 @@ public class GameState {
     private final String numColStyle;
     private final String currentPlayer;
     private final String gameOverMsg;
+    private boolean isGodCardSelectionActive;
 
     private GameState(String name, String footer, Cell[] cells, Plugin[] plugins, String numColStyle, String currentPlayer, String gameOverMsg) {
         this.name = name;
@@ -24,6 +25,7 @@ public class GameState {
         this.numColStyle = numColStyle;
         this.currentPlayer = currentPlayer;
         this.gameOverMsg = gameOverMsg;
+        this.isGodCardSelectionActive = false;
     }
 
     public static GameState forGame(GameFrameworkImpl game) {
@@ -58,21 +60,44 @@ public class GameState {
     }
 
     public void updateCellStates(GameFrameworkImpl game) {
-        for (int y = 0; y < game.getGridHeight(); y++) {
-            for (int x = 0; x < game.getGridWidth(); x++) {
-                // Calculate the index for the linear cells array based on x, y coordinates
-                int index = y * game.getGridWidth() + x;
-                
-                // Fetch the current text for the cell from the game logic
-                // This might be a player symbol, a tower height, or any other game-specific representation
-                String newText = game.getSquare(x, y);
-                
-                // Determine if the cell is playable based on the current game logic
-                boolean isPlayable = game.isSquarePlayable(x, y);
-                
-                // Update the cell's state
-                cells[index].setText(newText); // Update text to reflect current state
-                cells[index].setPlayable(isPlayable); // Update playability
+        if (isGodCardSelectionActive) {
+            int index = 0;
+            for (String key : godCards.buildStrategies.keySet()) {
+                if (index >= 25) break;  // Prevent exceeding the grid size
+                cells[index++] = new Cell(key, true, "Build");
+            }
+            // Adding move strategies to the selection board
+            for (String key : godCards.moveStrategies.keySet()) {
+                if (index >= 25) break;
+                cells[index++] = new Cell(key, true, "Move");
+            }
+            // Adding win strategies to the selection board
+            for (String key : godCards.winStrategies.keySet()) {
+                if (index >= 25) break;
+                cells[index++] = new Cell(key, true, "Win");
+            }
+            // Fill remaining cells with empty cells if any
+            while (index < 25) {
+                cells[index++] = new Cell("", false, "");
+            }
+        }
+        else {
+            for (int y = 0; y < game.getGridHeight(); y++) {
+                for (int x = 0; x < game.getGridWidth(); x++) {
+                    // Calculate the index for the linear cells array based on x, y coordinates
+                    int index = y * game.getGridWidth() + x;
+                    
+                    // Fetch the current text for the cell from the game logic
+                    // This might be a player symbol, a tower height, or any other game-specific representation
+                    String newText = game.getSquare(x, y);
+                    
+                    // Determine if the cell is playable based on the current game logic
+                    boolean isPlayable = game.isSquarePlayable(x, y);
+                    
+                    // Update the cell's state
+                    cells[index].setText(newText); // Update text to reflect current state
+                    cells[index].setPlayable(isPlayable); // Update playability
+                }
             }
         }
         // Optionally, if your architecture supports it, trigger a UI refresh here to reflect the updates
@@ -104,6 +129,9 @@ public class GameState {
     //     }
     // }
 
+    public void setGodCardSelectionActive(boolean godCardSelectionActive) {
+        isGodCardSelectionActive = godCardSelectionActive;
+    }
 
     public Cell[] getCells() {
         return this.cells;
