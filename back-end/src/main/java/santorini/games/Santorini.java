@@ -20,7 +20,7 @@ public final class Santorini {
     private Player currPlayer;
     private boolean gameWon;
     public static final int SIZE = 5;
-    private TurnPhase currentPhase = TurnPhase.PLACE_WORKERS;
+    private TurnPhase currentPhase = TurnPhase.SELECT_GOD_CARD;
     private boolean workersPlaced = false;
     private Worker selectedWorker;
     private GodCards godCards;
@@ -196,7 +196,7 @@ public final class Santorini {
     
         // Check if all players have placed their workers before moving to the MOVE phase for the game
         if (allWorkersPlaced()) {
-            currentPhase = TurnPhase.SELECT_WORKER;
+            currentPhase = TurnPhase.MOVE;
         }
     }
 
@@ -227,7 +227,7 @@ public final class Santorini {
                 currPlayer.getMoveStrategy().performMove(worker, x, y, board);
             }
         }
-        else if (currPlayer.getMoveStrategy().hasSecondMove() && currPlayer.getMoveStrategy().hasPerformedFirstMove()) {
+        else if (currPlayer.getMoveStrategy().hasSecondMove() && moveStrategy.hasPerformedFirstMove()) {
             if (placed) {
                 currPlayer.getMoveStrategy().performMove(worker, x, y, board);
                 currentPhase = TurnPhase.BUILD;
@@ -251,6 +251,40 @@ public final class Santorini {
         }
     }
 
+    private boolean godCardsSelected() {
+        for (Player player : players) {
+            if (!player.hasBuildStrategy() && !player.hasMoveStrategy() && !player.hasWinStrategy()) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    public boolean isValidGodCard(int x, int y) {
+        String godCardName = board.getTile(x, y).getContent(); // Assuming tiles can store content like God Card names during selection phase
+        return godCards.getBuildStrategy(godCardName) != null || 
+               godCards.getMoveStrategy(godCardName) != null ||
+               godCards.getWinStrategy(godCardName) != null;
+    }
+
+    public void handleGodChoice(int x, int y) {
+        boolean placed = isValidGodCard(x, y);
+        if (!placed) return;
+        else {
+            String godCardName = board.getTile(x, y).getContent();
+            // Assign corresponding strategy based on the chosen God Card
+            if (godCards.getBuildStrategy(godCardName) != null) {
+                currPlayer.setBuildStrategy(godCards.getBuildStrategy(godCardName));
+            } else if (godCards.getMoveStrategy(godCardName) != null) {
+                currPlayer.setMoveStrategy(godCards.getMoveStrategy(godCardName));
+            } else if (godCards.getWinStrategy(godCardName) != null) {
+                currPlayer.setWinStrategy(godCards.getWinStrategy(godCardName));
+            }
+            switchPlayer();
+        }
+        if (godCardsSelected()) currentPhase = TurnPhase.PLACE_WORKERS;
+    }
+
     /**
      * Plays the game based on the current phase and the coordinates of the move
      * @param x The x-coordinate of the move
@@ -261,6 +295,9 @@ public final class Santorini {
             return; // Stop processing if the game is already won.
         }
         switch (currentPhase) {
+            case SELECT_GOD_CARD:
+                handleGodChoice(x, y);
+                break;
             case PLACE_WORKERS:
                 handleWorkerPlacement(x, y);
                 break;
