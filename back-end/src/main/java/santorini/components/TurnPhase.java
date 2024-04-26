@@ -3,10 +3,8 @@ package components;
 public enum TurnPhase {
     PLACE_WORKERS,
     SELECT_WORKER,
-    SELECT_GOD_WORKER,
+    SELECT_GOD_CARD,
     MOVE,
-    GOD_MOVE,
     BUILD,
-    GOD_BUILD,
     END_TURN
 }
