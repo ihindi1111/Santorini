@@ -1,7 +1,9 @@
 package components;
 
-import interfaces.IBuildStrategy;
-import interfaces.IMoveStrategy;
+import interfaces.GodStrategy;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Board {
     private static final int BOARD_SIZE = 5;
@@ -44,7 +46,7 @@ public class Board {
     * @return true if the build is valid, false otherwise
     */
     public boolean isValidBuild(Player player, Worker worker, int buildX, int buildY) {
-        if (player.getGodStrategy().hasBuild() && player.getGodStrategy().hasPerformedFirstAction()) {
+        if (player.getGodStrategy().hasNum() == 2 && player.getGodStrategy().hasPerformedFirstAction()) {
             return player.getGodStrategy().isValidAction(player, worker, this, buildX, buildY);
         }
         if (worker == null) return false;
@@ -67,7 +69,7 @@ public class Board {
     * @return true if the move is valid, false otherwise
     */
     public boolean isValidMove(Player player, Worker worker, int newX, int newY) {
-        if (player.getGodStrategy().hasMove() && player.getGodStrategy().hasPerformedFirstAction()) {
+        if (player.getGodStrategy().hasNum() == 1 && player.getGodStrategy().hasPerformedFirstAction()) {
             return player.getGodStrategy().isValidAction(player, worker, this, newX, newY);
         }
         if (worker == null) return false;

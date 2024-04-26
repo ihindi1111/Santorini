@@ -46,12 +46,17 @@ public class Hephaestus implements GodStrategy {
                 firstBuild = true;
                 previousTile = board.getTile(x, y);  // Remember the tile of the first build
             } else {
-                // Reset after optional second build
-                previousTile = null;
+                resetAfterBuild();
             }
             return true;
         }
         return false;
+    }
+
+    private void resetAfterBuild() {
+        firstBuild = false;
+        previousTile = null;
+        // Optionally, trigger phase change or player switch here if needed
     }
 
     @Override
@@ -62,10 +67,6 @@ public class Hephaestus implements GodStrategy {
     @Override
     public boolean hasSecondAction() {
         return true;
-    }
-
-    public boolean setPhase(boolean phase) {
-        return firstBuild = phase;
     }
 
     @Override

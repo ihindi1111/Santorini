@@ -20,6 +20,7 @@ import godcards.Hephaestus;
 import godcards.Minotaur;
 import godcards.Pan;
 import godcards.Apollo;
+import godcards.Artemis;
 
 
 public final class Santorini {
@@ -55,6 +56,7 @@ public final class Santorini {
         godCards.registerGodCard("Minotaur", new Minotaur());
         godCards.registerGodCard("Pan", new Pan());
         godCards.registerGodCard("Apollo", new Apollo());
+        godCards.registerGodCard("Artemis", new Artemis());
     }
 
     
@@ -237,14 +239,19 @@ public final class Santorini {
     private void handleGodAction(Worker worker, int x, int y) {
         GodStrategy godStrategy = currPlayer.getGodStrategy();
         if (!godStrategy.hasPerformedFirstAction() && !godStrategy.hasSecondAction()) {
+            System.out.println("Meow");
             if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
+                System.out.println("Yay");
                 if (checkForWin(worker)) {
                     gameWon = true;
                     return;
                 }
 
                 if (godStrategy.hasNum() == 1) currentPhase = TurnPhase.BUILD;
-                else if (godStrategy.hasNum() == 2) currentPhase = TurnPhase.SELECT_WORKER;
+                else if (godStrategy.hasNum() == 2) {
+                    switchPlayer();
+                    currentPhase = TurnPhase.SELECT_WORKER;
+                }
             }
         }
         else if (!godStrategy.hasPerformedFirstAction() && godStrategy.hasSecondAction()) {
@@ -255,72 +262,20 @@ public final class Santorini {
                 }
             }
         }
-        else if (godStrategy.hasPerformedFirstAction() && !godStrategy.hasSecondAction()) {
-            if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
-                if (checkForWin(worker)) {
-                    gameWon = true;
-                    return;
-                }
-                currentPhase = TurnPhase.BUILD;
-            }
-        }
         else if (godStrategy.hasPerformedFirstAction() && godStrategy.hasSecondAction()) {
             if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
                 if (checkForWin(worker)) {
                     gameWon = true;
                     return;
                 }
-                currentPhase = TurnPhase.BUILD;
-            }
-        }
-        else if (godStrategy.hasPerformedFirstAction() && !godStrategy.hasSecondAction()) {
-            if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
-                if (checkForWin(worker)) {
-                    gameWon = true;
-                    return;
-                }
-                currentPhase = TurnPhase.BUILD;
-            }
-        }
-        else if (godStrategy.hasPerformedFirstAction() && godStrategy.hasSecondAction()) {
-            if (godStrategy.performAction(currPlayer, worker, board, x, y)) {
-                if (checkForWin(worker)) {
-                    gameWon = true;
-                    return;
-                }
-                currentPhase = TurnPhase.BUILD;
-            }
-        }
-        if (!godStrategy.hasSecondAction()) {
-            if (performed) {
-                if (godStrategy.hasMove()) {
-                    checkForWin(worker);
-                    currentPhase = TurnPhase.BUILD;
-                }
-                else if (godStrategy.hasBuild()) {
+                if (godStrategy.hasNum() == 1) currentPhase = TurnPhase.BUILD;
+                else if (godStrategy.hasNum() == 2) {
+                    switchPlayer();
                     currentPhase = TurnPhase.SELECT_WORKER;
                 }
             }
         }
-        else if (godStrategy.hasSecondAction() && !godStrategy.hasPerformedFirstAction()) {
-            if (performed) {
-                if (godStrategy.hasMove()) {
-                    godStrategy.performAction(currPlayer, worker, board, x, y);
-                    checkForWin(worker);
-                    godStrategy.setPhase(false);
-                    currentPhase = TurnPhase.BUILD;
-                }
-            }
-        }
-        else if (godStrategy.hasSecondAction() && godStrategy.hasPerformedFirstAction()) {
-            if (performed) {
-                checkForWin(worker);
-                currentPhase = TurnPhase.BUILD;
-            }
-        }
-        else {
-            currentPhase = TurnPhase.BUILD;
-        }
+        else return;
     }
 
     private boolean godCardsSelected() {
@@ -375,9 +330,9 @@ public final class Santorini {
             case MOVE:
                 int x1 = selectedWorker.getX();
                 int y1 = selectedWorker.getY();
-                if (godStrategy.hasMove()) handleGodAction(selectedWorker, x, y);
+                if (godStrategy.hasNum() == 1) handleGodAction(selectedWorker, x, y);
                 else if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
-                    if (godStrategy.hasWin()) {
+                    if (godStrategy.hasNum() == 0) {
                         if (godStrategy.performAction(currPlayer, selectedWorker, board, x1, y1)) {
                             gameWon = true;
                             return;
@@ -399,7 +354,7 @@ public final class Santorini {
                 }
                 break;
             case BUILD:
-                if (godStrategy.hasBuild()) handleGodAction(selectedWorker, x, y);
+                if (godStrategy.hasNum() == 2) handleGodAction(selectedWorker, x, y);
                 else if (selectedWorker != null && build(selectedWorker, x, y)) {
                     selectedWorker = null;
                     currentPhase = TurnPhase.SELECT_WORKER;

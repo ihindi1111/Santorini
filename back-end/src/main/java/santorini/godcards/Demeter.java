@@ -43,7 +43,7 @@ public class Demeter implements GodStrategy {
                 firstBuild = true;
                 previousTile = board.getTile(x, y);  // Remember the tile of the first build
             } else {
-                // Reset after optional second build
+                firstBuild = false;
                 previousTile = null;
             }
             return true;
@@ -58,7 +58,7 @@ public class Demeter implements GodStrategy {
 
     @Override
     public boolean hasSecondAction() {
-        return firstBuild;
+        return true;
     }
 
     @Override
