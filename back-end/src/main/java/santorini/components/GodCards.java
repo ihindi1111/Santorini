@@ -47,4 +47,16 @@ public class GodCards {
     public IWinStrategy getWinStrategy(String name) {
         return winStrategies.get(name);
     }
+
+    public List<String> getBuildStrategies() {
+        return new ArrayList<>(buildStrategies.keySet());
+    }
+
+    public List<String> getMoveStrategies() {
+        return new ArrayList<>(moveStrategies.keySet());
+    }
+
+    public List<String> getWinStrategies() {
+        return new ArrayList<>(winStrategies.keySet());
+    }
 }
