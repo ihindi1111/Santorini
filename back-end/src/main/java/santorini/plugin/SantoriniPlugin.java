@@ -46,11 +46,7 @@ public class SantoriniPlugin implements GamePlugin<String> {
     public void onNewGame() {
         game = new Santorini();
         framework.setFooterText(GAME_START_FOOTER);
-        for (int y = 0; y < HEIGHT; y++) {
-            for (int x = 0; x < WIDTH; x++) {
-                framework.setSquare(x, y, ""); // Clear the board
-            }
-        }
+        setupGodCardSelection();
     }
 
     @Override
@@ -72,10 +68,36 @@ public class SantoriniPlugin implements GamePlugin<String> {
     }
 
     public void onMovePlayed(int x, int y) {
-        game.play(x, y);
-        framework.setSquare(x, y, game.getBoard().getTile(x, y).visualRepresentation());
-        updateBoardVisuals();
+        if (game.getPhase().equals(TurnPhase.SELECT_GOD_CARD)) {
+            game.handleGodChoice(x, y);
+        else {
+            game.play(x, y);
+            updateBoardVisuals();
+        }
         updateFooterText();
+        // game.play(x, y);
+        // framework.setSquare(x, y, game.getBoard().getTile(x, y).visualRepresentation());
+        // updateBoardVisuals();
+        // updateFooterText();
+    }
+
+    private void setupGodCardSelection() {
+        int index = 0;
+        for (String key : game.getGodCards().getBuildStrategies().keySet()) {
+            if (index >= 25) break;
+            framework.setSquare(index % 5, index / 5, key + " - Build");
+            index++;
+        }
+        for (String key : game.getGodCards().getMoveStrategies().keySet()) {
+            if (index >= 25) break;
+            framework.setSquare(index % 5, index / 5, key + " - Move");
+            index++;
+        }
+        for (String key : game.getGodCards().getWinStrategies().keySet()) {
+            if (index >= 25) break;
+            framework.setSquare(index % 5, index / 5, key + " - Win");
+            index++;
+        }
     }
 
     private void updateFooterText() {
@@ -88,6 +110,9 @@ public class SantoriniPlugin implements GamePlugin<String> {
                 break;
             case SELECT_WORKER:
                 GAME_START_FOOTER = String.format("%s, select a worker to move.", game.getCurrentPlayer().toString());
+                break;
+            case SELECT_GOD_WORKER:
+                GAME_START_FOOTER = String.format("%s, select a God card", game.getCurrentPlayer().toString());
                 break;
             case MOVE:
                 GAME_START_FOOTER = "Move your selected worker to an adjacent square.";
