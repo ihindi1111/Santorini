@@ -26,6 +26,7 @@ public class GodCards {
         registerMoveCard("Minotaur", new Minotaur());
         registerWinCard("Pan", new Pan());
         registerMoveCard("Apollo", new Apollo());
+        registerMoveCard("Artemis", new Artemis());
     }
 
     public void registerBuildCard(String name, IBuildStrategy strategy) {
