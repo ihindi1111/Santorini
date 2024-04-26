@@ -4,14 +4,15 @@ import components.Tile;
 import components.Worker;
 import components.Board;
 import interfaces.IBuildStrategy;
+import components.Player;
 
 public class Hephaestus implements IBuildStrategy {
     private boolean firstBuild = false;
     private Tile previousTile = null;
 
     @Override
-    public boolean performBuild(Worker worker, Board board, int x, int y) {
-        if (isValidBuild(worker, board, x, y)) {  // Only add a block if it won't create a dome
+    public boolean performBuild(Player player, Worker worker, Board board, int x, int y) {
+        if (isValidBuild(player, worker, board, x, y)) {  // Only add a block if it won't create a dome
             previousTile.build();  // Add another block
             return true;
         }
@@ -19,7 +20,7 @@ public class Hephaestus implements IBuildStrategy {
     }
 
     @Override
-    public boolean isValidBuild(Worker worker, Board board, int x, int y) {
+    public boolean isValidBuild(Player player, Worker worker, Board board, int x, int y) {
         if (board.getTile(x, y) == previousTile || previousTile == null) {
             return true; // Skip the second build and end the building phase
         } //might need fixing
