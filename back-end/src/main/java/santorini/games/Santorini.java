@@ -29,6 +29,7 @@ public final class Santorini {
     private Worker selectedWorker;
     private GodCards godCards;
     private GodCardManager godCardManager;
+    private Tile startTile;
 
     /**
      * Constructor for Santorini game initializes the board and players.
@@ -316,23 +317,22 @@ public final class Santorini {
             case SELECT_WORKER:
                 selectedWorker = selectWorker(x, y);
                 if (selectedWorker != null && selectedWorker.getPlayer() == currPlayer.getPlayerID()) {
+                    startTile = board.getTile(selectedWorker.getX(), selectedWorker.getY());
                     currentPhase = TurnPhase.MOVE;
                 }
                 break;
             case MOVE:
-            Tile startTile = board.getTile(selectedWorker.getX(), selectedWorker.getY());
                 if (currPlayer.hasMoveStrategy()) handleGodMove(selectedWorker, x, y);
                 else if (selectedWorker != null && moveWorker(selectedWorker, x, y)) {
-                    System.out.println("Reached");
-                    if (currPlayer.hasWinStrategy()) {
-                        currPlayer.getWinStrategy().checkForWin(startTile, board.getTile(x, y));
+                    if (currPlayer.hasWinStrategy() && currPlayer.getWinStrategy().checkForWin(startTile, board.getTile(x, y))) {
+                        gameWon = true;
+                        return;
                     }
                     if (checkForWin(selectedWorker)) {
                         gameWon = true;
                         return;
                     }
                     currentPhase = TurnPhase.BUILD;
-                    System.out.println("YES!");
                 }
                 else {
                     selectedWorker = null;  // Move was not successful, reset the selected worker
@@ -340,7 +340,6 @@ public final class Santorini {
                 }
                 break;
             case BUILD:
-                System.out.println("Building");
                 if (currPlayer.hasBuildStrategy()) handleGodBuild(selectedWorker, x, y);
                 else if (selectedWorker != null && build(selectedWorker, x, y)) {
                     selectedWorker = null;

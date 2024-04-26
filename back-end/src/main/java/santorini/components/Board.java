@@ -65,7 +65,6 @@ public class Board {
     * @return true if the move is valid, false otherwise
     */
     public boolean isValidMove(Player player, Worker worker, int newX, int newY) {
-        System.out.println("Checking if move is valid");
         // Check if move is within bounds and to an adjacent, unoccupied tile that does not exceed climb limit
         if (player.hasMoveStrategy()) return player.getMoveStrategy().isValidMove(worker, getTile(worker.getX(), worker.getY()), getTile(newX, newY), this);
         if (worker == null) return false;
