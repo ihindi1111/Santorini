@@ -1,48 +1,40 @@
-// package edu.cmu.cs214.hw3.santorini.backend.tests;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
-// import org.junit.jupiter.api.Test;
+import components.Worker;
 
-// import edu.cmu.cs214.hw3.santorini.backend.Worker;
+public class WorkerTest {
+    private Worker worker;
 
-// import org.junit.Before;
-// import static org.junit.jupiter.api.Assertions.*;
+    @Before
+    public void setUp() {
+        worker = new Worker(1, 0, 0);
+    }
 
-// public class WorkerTest {
+    @Test
+    public void testInitialPosition() {
+        assertEquals("Initial x should be 0", 0, worker.getX());
+        assertEquals("Initial y should be 0", 0, worker.getY());
+    }
 
-//     private Worker worker;
+    @Test
+    public void testSetPosition() {
+        worker.setPosition(1, 2);
+        assertEquals("X should be updated to 1", 1, worker.getX());
+        assertEquals("Y should be updated to 2", 2, worker.getY());
+    }
 
-//     @Before
-//     public void setUp() {
-//         worker = new Worker(2, 3);
-//     }
+    @Test
+    public void testGetPlayer() {
+        assertEquals("Player ID should be 1", 1, worker.getPlayer());
+    }
 
-//     @Test
-//     public void testInitialCoordinates() {
-//         assertEquals(2, worker.getX());
-//         assertEquals(3, worker.getY());
-//     }
-
-//     @Test
-//     public void testSetX() {
-//         worker.setX(4);
-//         assertEquals(4, worker.getX());
-//         // Ensure Y-coordinate remains unchanged
-//         assertEquals(3, worker.getY());
-//     }
-
-//     @Test
-//     public void testSetY() {
-//         worker.setY(5);
-//         assertEquals(5, worker.getY());
-//         // Ensure X-coordinate remains unchanged
-//         assertEquals(2, worker.getX());
-//     }
-
-//     @Test
-//     public void testMove() {
-//         worker.setX(1);
-//         worker.setY(1);
-//         assertEquals(1, worker.getX());
-//         assertEquals(1, worker.getY());
-//     }
-// }
+    @Test
+    public void testIsPlaced() {
+        Worker newWorker = new Worker(1, -1, -1);
+        assertFalse("Worker should not be considered placed if at -1, -1", newWorker.isPlaced());
+        newWorker.setPosition(0, 0);
+        assertTrue("Worker should be considered placed if moved to 0, 0", newWorker.isPlaced());
+    }
+}

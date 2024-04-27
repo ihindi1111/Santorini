@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="BoardTest" time="0.047" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="WorkerTest" time="0.001" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -58,10 +58,8 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testGetTileValidCoordinates" classname="BoardTest" time="0.012"/>
-  <testcase name="testValidBuild" classname="BoardTest" time="0.001"/>
-  <testcase name="testGetTileOutOfBounds" classname="BoardTest" time="0.001"/>
-  <testcase name="testValidMove" classname="BoardTest" time="0"/>
-  <testcase name="testBoardInitialization" classname="BoardTest" time="0"/>
-  <testcase name="testConstants" classname="BoardTest" time="0"/>
+  <testcase name="testInitialPosition" classname="WorkerTest" time="0"/>
+  <testcase name="testIsPlaced" classname="WorkerTest" time="0"/>
+  <testcase name="testGetPlayer" classname="WorkerTest" time="0"/>
+  <testcase name="testSetPosition" classname="WorkerTest" time="0"/>
 </testsuite>
