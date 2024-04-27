@@ -9,6 +9,7 @@ Preconditions:
 ValidMove: The new coordinates (newX, newY) must be adjacent to the worker's current position either vertically or horizontally, and must not be the current tile the worker occupies.
 They can only be maximum 1 away, by up, down, left, or right, not diagonal
 ValidLevelDifference: The level difference between the current position and (newX, newY) must be no more than 1, allowing the worker to climb up or move horizontally.
+CorrectPlayer: The right player has selected their own worker and not a different one
 NoDome: The tile at (newX, newY) must not have a dome.
 WithinBounds: (newX, newY) must be within the board's limits (5x5 grid, indices 0-4).
 MinotaurAbility: If the Minotaur is used and an opponent's worker is on the target tile, there must be a free tile directly behind the opponent's worker to push them into. 
