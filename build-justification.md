@@ -1,36 +1,34 @@
 Determining a Valid Build
-For this implementation, we make the build call from the Player class first, which then passes a isValidBuild to the Board class to validate if it is a valid build. Then the Board makes the following verifications:
-* First checks if the build call is within valid boundaries
-* Checks that the worker is not standing on the block they are attempting to build
-* Checks that that block has moved only one block
-* Checks there is no worker or a dome on the block they are attempting to build on
-If all checks pass, player makes a call to Tile.build to update the nearby Tiles accordingly
+
+When validating a build action, the process initiates from the Player class attempting a build with a valid selectedPlayer initially, and within the game class calls isValidBuild on the Board class. The Board class then checks:
+
+* The build action is within valid boundaries, including nearby, no worker is on the block, the player is the correct one.
+* The worker isn’t attempting to build on its own tile.
+* The target tile for building is adjacent to the worker’s current position.
+* The tile is free from other workers and domes.
+* There is no dome
+* 
+* For a player with the Demeter card, an additional validation ensures the player can perform a second build on a different adjacent tile, except the one just built upon, or allows them to click on themselves to skip, enhancing strategic depth without violating game balance
 
 Responsibilities:
 
-Player: Controls the Workers and actions, including build, moveWorker, and getWorker
-Board: Knows the state of the Board's dimensions, then validates the player's position and if the Tile is occupied or has a dome
-Tile: Increases its own level and can set its occupancy
-
+Player: Holds workers
+Board: Knows the state of the Board's dimensions, then validates the player's position and if the Tile is occupied or has a dome. Maintains the game board’s state, validates build positions relative to the worker’s position, checks Tile occupancy, if it is the correct player choosing it, valid height distance, whether the block already has a dome, whether the block is in bounds, and worker is not staying on the same square. We call on the Tiles to check dome, occupation, and level
+Tile: Manages its level and occupancy state, performs actual building.
 Methods:
-Player.build(int x, int y, int workerID)
-board.isValidBuild(worker, x, y)
-Tile.build(worker, x, y);
-Tile.increaseLevel();
 
+Santorini.build(Worker worker, int x, int y)
+Board.isValidBuild(Player player, Worker worker, int x, int y)
+Tile.build()
 Justification:
-Information Expert Principle: The Tile object holds the information about itself, so it should be responsible for determining if a build action is valid considering the boundaries of the board as well
-Single Responsibility Principle: Tile class is focused on managing its state and the implications of a worker moving to or from it, keeping to the single responsibility principle
-Law of Demeter: Making sure other classes do not need to have knowledge and access the Tile fields to update the build
 
-Alternatives Considered
+Information Expert Principle: The Tile object, which directly manages its state, determines the validity of a build action.
+Single Responsibility Principle (SRP): By keeping the Tile class focused on its state management, we adhere to SRP, avoiding overloading other classes with multiple responsibilities.
+Law of Demeter: This design minimizes direct interactions with the Tile properties by other classes, promoting loose coupling.
 
-Centralized Building Logic in Game:
-Trade-off: Would have reduced the complexity of the Tile class but increased the Game's responsibilities, making it more prone to change for different reasons and violating SRP
+Alternatives Considered:
 
-Making board build
-Considered using the board since it is validating the build if it should realized this violates Law of Demeter since we were making changes and needing to access the Tile class directly, so used the Tile class itself.
-
-Final Design Decision
-The chosen design has the Board object act as a coordinator that delegates build actions to the individual Tile objects. Each Tile is then responsible for knowing and updating its state along with Worker to validate it is the right Worker. This approach respects the principles of object-oriented design.
-
+Centralizing Building Logic in Game: This approach was rejected to avoid overburdening the Game class with direct tile management tasks, which would conflict with SRP and overburden Game responsbilities
+Board Managing Builds: Initially considered, this approach would have violated the Law of Demeter by requiring the Board to manipulate Tile details directly.
+Final Design Decision:
+The finalized design delegates the coordination of build actions to the Board, which then allows individual Tiles to update their own state. This setup not only supports extensibility for implementing additional features like god cards but also maintains clean separation of concerns within the game’s architecture.
