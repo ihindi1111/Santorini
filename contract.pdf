@@ -1,19 +1,25 @@
-Operation: moveWorker(workerId, newX, newY)
+Operation: moveWorker(worker: Worker, newX: int, newY: int)
 
-Cross References: Use Case: Player Moves a Worker
+Use cases:
+The user has selected a worker and is attempting to move it,
+Could be to use the Minotaur's ability to push an opponent's worker.
 
 Preconditions:
 
-validMove: The new coordinates, (newX, newY), represents a valid position on the board 
-that is 1 square adjacent to the worker's current position, meaning either the X or Y position has increased by 1 and not on the same spot
-NoWorkerOnNewPosition: There is no other worker on the position (newX, newY)
-ValidLevelDifference: The difference in levels between the worker's current position and (newX, newY) is no more than 1, 
-ensuring the worker can climb up one level or move horizontally
-hasDome: The tile at (newX, newY) does not have a dome to represent a complete tower
-WithinBounds: The Player is attempting to move to a valid position within the Board's dimensions (5x5; 0-4)
+ValidMove: The new coordinates (newX, newY) must be adjacent to the worker's current position either vertically or horizontally, and must not be the current tile the worker occupies.
+They can only be maximum 1 away, by up, down, left, or right, not diagonal
+ValidLevelDifference: The level difference between the current position and (newX, newY) must be no more than 1, allowing the worker to climb up or move horizontally.
+NoDome: The tile at (newX, newY) must not have a dome.
+WithinBounds: (newX, newY) must be within the board's limits (5x5 grid, indices 0-4).
+MinotaurAbility: If the Minotaur is used and an opponent's worker is on the target tile, there must be a free tile directly behind the opponent's worker to push them into. 
+This tile must also be free of domes and other workers but can be of any height
+GodStrategyCheck: If Minotaur is active, these conditions are checked first. This includes checking if is the first action and then validating moves that also has a Worker of an opponenet in it
+WorkerExistence: The worker attempting the move must not be null and must be the worker of the current player.
+DifferentTile: The new position (newX, newY) must be different from the worker's current position.
 
 Postconditions:
 
-WorkerMoved: The worker identified by workerId is now located at (newX, newY).
-gameWon: After the move, check if the player has won otherwise continue the game
-switchPlayer: If the move does not result in a victory condition, the game state advances to the next player's turn
+WorkerMoved: The worker is relocated to (newX, newY). 
+The square must be within valid bounds, valid level difference, and no dome. 
+If using Minotaur and displacing an opponent's worker, that worker is pushed to the subsequent tile behind the initial target tile.
+checkForWin: Check for a win to see if the worker reaches the third level after the move
