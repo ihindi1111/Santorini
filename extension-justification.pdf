@@ -1,0 +1,13 @@
+When redesigning the game to enhance its extensibility, I implemented the Strategy pattern, which proved to be of great use when creating one uniformed design that GodCards with various strategies could use without altering the core gameplay classes. 
+Some benefits that I took into consideration are:
+1. Open/Closed Principle: The Strategy pattern allows different God cards to be added without altering existing code, making the system extensible and maintainable.
+2. Single Responsibility Principle: Each strategy encapsulates the behavior related to a specific god, keeping classes focused on a single responsibility and making them easier to manage and understand.
+Dependency Inversion Principle: High-level modules are not dependent on low-level modules but on abstractions. Here, game characters depend on abstract actions (strategies), not concrete implementations, which can vary.
+
+This design choice allows each "God" to encapsulate unique strategies for movement, building, and winning conditions.
+
+Initially, I considered both the Template and Decorator patterns; however, the Template pattern was less flexible for dynamic changes, requiring subclassing to create new behavior, potentially leading to a rigid structure that's harder to modify as new gods are conceptualized. 
+
+The Decorator pattern was also evaluated; however, it was considered overly complex for our needs, as it focuses on adding behavior at runtime, which could complicate the game logic unnecessarily.
+
+The chosen approach not only simplifies maintenance and scalability but also promotes clear separation of concerns, a fundamental design principle that enhances system manageability and evolution.
