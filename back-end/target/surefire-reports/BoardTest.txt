@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: BoardTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.022 s <<< FAILURE! - in BoardTest
+testValidBuild(BoardTest)  Time elapsed: 0.003 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "interfaces.GodStrategy.hasNum()" because the return value of "components.Player.getGodStrategy()" is null
+	at BoardTest.testValidBuild(BoardTest.java:66)
+
+testValidMove(BoardTest)  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "interfaces.GodStrategy.hasNum()" because the return value of "components.Player.getGodStrategy()" is null
+	at BoardTest.testValidMove(BoardTest.java:57)
+

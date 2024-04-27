@@ -103,6 +103,14 @@ public class Tile {
         return this.worker;
     }
 
+    public boolean placeDome() {
+        if (!hasDome) {
+            hasDome = true;
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Returns a visual representation of the tile
      * @return the visual representation

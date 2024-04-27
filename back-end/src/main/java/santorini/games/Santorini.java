@@ -21,6 +21,7 @@ import godcards.Minotaur;
 import godcards.Pan;
 import godcards.Apollo;
 import godcards.Artemis;
+import godcards.Atlas;
 
 
 public final class Santorini {

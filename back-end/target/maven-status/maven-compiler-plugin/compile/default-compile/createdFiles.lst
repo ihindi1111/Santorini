@@ -7,6 +7,7 @@ godcards/Minotaur.class
 components/Board.class
 framework/core/GamePlugin.class
 components/Worker.class
+godcards/Atlas.class
 components/TurnPhase.class
 components/App$Test.class
 godcards/Apollo.class
