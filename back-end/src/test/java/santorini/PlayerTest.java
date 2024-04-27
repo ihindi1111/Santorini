@@ -1,78 +1,72 @@
-// package edu.cmu.cs214.hw3.santorini.backend.tests;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
-// import org.junit.jupiter.api.Test;
+import interfaces.GodStrategy;
 
-// import edu.cmu.cs214.hw3.santorini.backend.Board;
-// import edu.cmu.cs214.hw3.santorini.backend.Player;
-// import edu.cmu.cs214.hw3.santorini.backend.Tile;
-// import edu.cmu.cs214.hw3.santorini.backend.Worker;
+import components.Player;
+import components.Board;
+import components.Worker;
 
-// import org.junit.Before;
-// import static org.junit.jupiter.api.Assertions.*;
 
-// public class PlayerTest {
 
-//         private Player player;
-//         private Board board;
-//         private Worker worker1;
-//         private Worker worker2;
-    
-//         @Before
-//         public void setUp() {
-//             board = new Board();
-//             player = new Player(board);
-//             worker2 = new Worker(1, 1);
-//             player.placeWorker(1, 0, 0);
-//             player.placeWorker(2, 1, 1);
-//         }
-    
-//         @Test
-//         public void testPlaceWorkerValidPosition() {
-//             try {
-//                 player.placeWorker(1, 2, 2);
-//                 assertTrue(board.getTile(2, 2).isOccupied());
-//             } catch (IllegalArgumentException e) {
-//                 fail("Should not throw an exception for a valid position");
-//             }
-//         }
-    
-//         @Test
-//         public void testMoveWorkerValidMove() {
-//             player.placeWorker(1, 2, 2);
-//             boolean result = player.moveWorker(2, 3, 1);
-//             assertTrue(result);
-//             assertTrue(board.getTile(2, 3).isOccupied());
-//             assertFalse(board.getTile(2, 2).isOccupied());
-//         }
-    
-//         @Test
-//         public void testMoveWorkerInvalidMove() {
-//             player.placeWorker(1, 2, 2);
-//             boolean result = player.moveWorker(2, 4, 1); // Assuming this move is not valid
-//             assertFalse(result);
-//             assertTrue(board.getTile(2, 2).isOccupied());
-//         }
-    
-//         @Test
-//         public void testBuildValidBuild() {
-//             player.placeWorker(1, 2, 2);
-//             boolean result = player.build(2, 3, 1);
-//             assertTrue(result);
-//             assertEquals(1, board.getTile(2, 3).getLevel());
-//         }
-    
-//         @Test
-//         public void testBuildInvalidBuild() {
-//             player.placeWorker(1, 2, 2);
-//             player.placeWorker(2, 2, 3); // Another worker occupying the build location
-//             boolean result = player.build(2, 3, 1);
-//             assertFalse(result);
-//         }
-        
-//         @Test
-//         public void testGetWorker() {
-//             assertNotNull(player.getWorker(1));
-//             assertEquals(worker1, player.getWorker(1));
-//             assertEquals(worker2, player.getWorker(2));
-//         }
-// }
+public class PlayerTest {
+    private Player player;
+    private GodStrategy mockStrategy;
+
+    @Before
+    public void setUp() {
+        player = new Player(1);
+        mockStrategy = new GodStrategy() {
+            @Override
+            public boolean isValidAction(Player player, Worker worker, Board board, int x, int y) {
+                return true; // Simplify for testing
+            }
+
+            @Override
+            public boolean performAction(Player player, Worker worker, Board board, int x, int y) {
+                return true; // Simplify for testing
+            }
+
+            @Override
+            public boolean hasPerformedFirstAction() {
+                return false;
+            }
+
+            @Override
+            public boolean hasSecondAction() {
+                return false;
+            }
+
+            @Override
+            public int hasNum() {
+                return 1;
+            }
+        };
+    }
+
+    @Test
+    public void testGetWorker() {
+        assertNotNull("Worker should not be null", player.getWorker(0));
+        assertNotNull("Worker should not be null", player.getWorker(1));
+        assertEquals("Workers should belong to the same player", 1, player.getWorker(0).getPlayer());
+    }
+
+    @Test
+    public void testPlayerID() {
+        assertEquals("Player ID should match constructor argument", 1, player.getPlayerID());
+    }
+
+    @Test
+    public void testPlayerName() {
+        assertEquals("Player name should be set correctly", "Player 1", player.toString());
+    }
+
+    @Test
+    public void testGodStrategy() {
+        assertNull("Initially no GodStrategy should be set", player.getGodStrategy());
+        player.setGodStrategy(mockStrategy);
+        assertNotNull("GodStrategy should be set", player.getGodStrategy());
+        assertTrue("Should confirm GodStrategy is set", player.hasGodStrategy());
+    }
+}

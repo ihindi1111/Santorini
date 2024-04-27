@@ -17,12 +17,40 @@ import interfaces.GodStrategy;
 public class BoardTest {
     private Board board;
     private Player mockPlayer;
+    private Worker worker;
 
     @Before
     public void setUp() {
-        board = new Board();
-        mockPlayer = new Player(1); // Initialization here
-        mockPlayer.getWorker(1).setPosition(2, 2); // This assumes getWorker(1) and setPosition(x, y) are correctly implemented.
+        board = new Board(); // Initialize your Board here
+        mockPlayer = new Player(1);
+        worker = new Worker(1, 2, 3); // Assuming Worker constructor takes playerID, x, y
+        mockPlayer.getWorker(0).setPosition(2, 3);
+        mockPlayer.setGodStrategy(new GodStrategy() {
+            @Override
+            public boolean isValidAction(Player player, Worker worker, Board board, int x, int y) {
+                return Math.abs(worker.getX() - x) <= 1 && Math.abs(worker.getY() - y) <= 1 && !board.getTile(x, y).isOccupied();
+            }
+
+            @Override
+            public boolean performAction(Player player, Worker worker, Board board, int x, int y) {
+                return true;
+            }
+
+            @Override
+            public boolean hasPerformedFirstAction() {
+                return false;
+            }
+
+            @Override
+            public boolean hasSecondAction() {
+                return false;
+            }
+
+            @Override
+            public int hasNum() {
+                return 1;
+            }
+        });
     }
 
     @Test
@@ -60,11 +88,8 @@ public class BoardTest {
 
     @Test
     public void testValidBuild() {
-        Player mockPlayer = new Player(1); // Replace MockPlayer with your mock class
-        mockPlayer.getWorker(1).setPosition(2, 3); // Replace MockWorker with your mock class
-
-        assertTrue("Worker should be able to build on an adjacent tile", board.isValidBuild(mockPlayer, mockPlayer.getWorker(1), 2, 3));
-        assertFalse("Worker should not be able to build on the same tile", board.isValidBuild(mockPlayer, mockPlayer.getWorker(1), 2, 2));
+        assertTrue("Worker should be able to build on an adjacent tile", board.isValidBuild(mockPlayer, worker, 3, 3));
+        assertFalse("Worker should not be able to build on the same tile", board.isValidBuild(mockPlayer, worker, 2, 3));
     }
 
     @Test
